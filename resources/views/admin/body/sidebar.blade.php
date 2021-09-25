@@ -8,7 +8,7 @@
                     <!-- logo for regular state and mobile devices -->
                     <div class="d-flex align-items-center justify-content-center">
                         <img src=" {{ asset('backend/images/logo-dark.png') }}" alt="">
-                        <h3><b>Sunny</b> Admin</h3>
+                        <h3><b>RM</b> Admin</h3>
                     </div>
                 </a>
             </div>
@@ -29,8 +29,8 @@
                     <i data-feather="message-circle"></i>
                     <span>Application</span>
                     <span class="pull-right-container">
-              <i class="fa fa-angle-right pull-right"></i>
-            </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </span>
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="chat.html"><i class="ti-more"></i>Chat</a></li>
@@ -42,8 +42,8 @@
                 <a href="#">
                     <i data-feather="mail"></i> <span>Mailbox</span>
                     <span class="pull-right-container">
-              <i class="fa fa-angle-right pull-right"></i>
-            </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </span>
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="mailbox_inbox.html"><i class="ti-more"></i>Inbox</a></li>
@@ -57,8 +57,8 @@
                     <i data-feather="file"></i>
                     <span>Pages</span>
                     <span class="pull-right-container">
-              <i class="fa fa-angle-right pull-right"></i>
-            </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </span>
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="profile.html"><i class="ti-more"></i>Profile</a></li>
@@ -76,8 +76,8 @@
                     <i data-feather="grid"></i>
                     <span>Components</span>
                     <span class="pull-right-container">
-              <i class="fa fa-angle-right pull-right"></i>
-            </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </span>
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="components_alerts.html"><i class="ti-more"></i>Alerts</a></li>
@@ -96,8 +96,8 @@
                     <i data-feather="credit-card"></i>
                     <span>Cards</span>
                     <span class="pull-right-container">
-              <i class="fa fa-angle-right pull-right"></i>
-            </span>
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </span>
                 </a>
                 <ul class="treeview-menu">
                     <li><a href="card_advanced.html"><i class="ti-more"></i>Advanced Cards</a></li>
@@ -112,10 +112,13 @@
 
     <div class="sidebar-footer">
         <!-- item-->
-        <a href="javascript:void(0)" class="link" data-toggle="tooltip" title="" data-original-title="Settings" aria-describedby="tooltip92529"><i class="ti-settings"></i></a>
+        <a href="javascript:void(0)" class="link" data-toggle="tooltip" title=""
+            data-original-title="Settings" aria-describedby="tooltip92529"><i class="ti-settings"></i></a>
         <!-- item-->
-        <a href="mailbox_inbox.html" class="link" data-toggle="tooltip" title="" data-original-title="Email"><i class="ti-email"></i></a>
+        <a href="mailbox_inbox.html" class="link" data-toggle="tooltip" title=""
+            data-original-title="Email"><i class="ti-email"></i></a>
         <!-- item-->
-        <a href="javascript:void(0)" class="link" data-toggle="tooltip" title="" data-original-title="Logout"><i class="ti-lock"></i></a>
+        <a href="javascript:void(0)" class="link" data-toggle="tooltip" title=""
+            data-original-title="Logout"><i class="ti-lock"></i></a>
     </div>
 </aside>

@@ -33,5 +33,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/dashboard', function () {
             return view('admin.index');
         })->name('admin.dashboard');
+
+        Route::get('/profile', [AdminProfileController::class, 'profile'])->name('admin.profile');
     });
 });
