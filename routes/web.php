@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\AdminController;
-use \App\Http\Controllers\Admin\AdminProfileController;
+use App\Http\Controllers\Admin\AdminProfileController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,15 +16,14 @@ use \App\Http\Controllers\Admin\AdminProfileController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// User Router
+Route::get('/', [IndexController::class,'index']);
 
 Route::middleware(['auth:sanctum,web', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-//Admin
+// Admin Router
 
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/login', [AdminController::class, 'loginform'])->name('admin.login');
@@ -35,5 +36,7 @@ Route::group(['prefix' => 'admin'], function () {
         })->name('admin.dashboard');
 
         Route::get('/profile', [AdminProfileController::class, 'profile'])->name('admin.profile');
+        Route::post('/profile/edit', [AdminProfileController::class, 'edit'])->name('admin.profile.edit');
+        Route::post('/profile/password', [AdminProfileController::class, 'password'])->name('admin.profile.password');
     });
 });
