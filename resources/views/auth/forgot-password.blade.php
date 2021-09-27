@@ -16,7 +16,7 @@
             <div class="sign-in-page">
                 <div class="row">
                     <!-- Forgot Password -->
-                    <div class="col-md-6 col-sm-6 sign-in">
+                    <div class="col-md-6 col-sm-6">
                         <h4 class="">Reset Password</h4>
                         @if (session('status'))
                             <div style="margin-top: 10px; color: green; font-size: 15px">

@@ -19,6 +19,18 @@ use App\Http\Controllers\Admin\AdminProfileController;
 // User Router
 Route::get('/', [IndexController::class,'index']);
 
+Route::group(['prefix' => 'user'], function () {
+    Route::middleware(['auth:sanctum,web', 'verified'])->group(function () {
+        Route::get('/logout', [IndexController::class, 'userLogout'])->name('user.logout');
+        Route::get('/profile', [IndexController::class, 'userProfile'])->name('user.profile');
+        Route::get('/password', [IndexController::class, 'userPassword'])->name('user.password');
+
+        Route::post('profile/edit', [IndexController::class, 'editProfile'])->name('user.profile.edit');
+        Route::post('/password', [IndexController::class, 'changePassword'])->name('user.password.change');
+    });
+});
+
+
 Route::middleware(['auth:sanctum,web', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
@@ -37,6 +49,6 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::get('/profile', [AdminProfileController::class, 'profile'])->name('admin.profile');
         Route::post('/profile/edit', [AdminProfileController::class, 'edit'])->name('admin.profile.edit');
-        Route::post('/profile/password', [AdminProfileController::class, 'password'])->name('admin.profile.password');
+        Route::post('/password', [AdminProfileController::class, 'password'])->name('admin.password');
     });
 });

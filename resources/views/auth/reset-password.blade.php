@@ -16,7 +16,7 @@
             <div class="sign-in-page">
                 <div class="row">
                     <!-- Reset Pass -->
-                    <div class="col-md-6 col-sm-6 sign-in">
+                    <div class="col-md-6 col-sm-6">
                         <h4 class="">Reset Password</h4>
                         <form method="POST" action="{{ route('password.update') }}">
                             @csrf
@@ -46,9 +46,9 @@
                             <button type="submit" class="btn-upper btn btn-primary checkout-page-button">Change Password</button>
                         </form>
                     </div>
-                    <!-- Sign-in -->
+                    <!-- Reset Pass -->
                 </div><!-- /.row -->
-            </div><!-- /.sigin-in-->
+            </div><!-- /.Reset Pass-->
         <!-- ============================================== BRANDS CAROUSEL ============================================== -->
         @include('frontend.body.brands')
         <!-- ============================================== BRANDS CAROUSEL : END ============================================== -->

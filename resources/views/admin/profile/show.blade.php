@@ -64,7 +64,7 @@
             <div class="box-body">
                 <div class="row">
                     <div class="col">
-                        <form action="{{ route('admin.profile.password') }}" method="post">
+                        <form action="{{ route('admin.password') }}" method="post">
                             @csrf
                             <div class="row">
                                 <div class="col-12">
