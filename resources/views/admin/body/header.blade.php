@@ -114,8 +114,8 @@
                     <a href="#" class="waves-effect waves-light rounded dropdown-toggle p-0" data-toggle="dropdown"
                         title="User">
                         <img src="{{
-                                !empty(Auth::user()->profile_photo_path)
-                                ? asset('upload/admin_images/'.Auth::user()->profile_photo_path)
+                                !empty(Auth::guard('admin')->User()->profile_photo_path)
+                                ? asset('upload/admin_images/'.Auth::guard('admin')->User()->profile_photo_path)
                                 : asset('backend/images/avatar/5.jpg')
                             }}"
                              alt="">

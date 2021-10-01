@@ -44,11 +44,15 @@
 <!-- Vendor JS -->
 <script src="{{ asset('backend/js/vendors.min.js') }}"></script>
 <script src="{{ asset('assets/icons/feather-icons/feather.min.js') }}"></script>
+<script src="{{ asset('assets/vendor_components/datatable/datatables.min.js') }}"></script>
+<script src="{{ asset('backend/js/pages/data-table.js') }}"></script>
 
 <!-- RM Admin App -->
 <script src="{{ asset('backend/js/template.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" type="text/javascript" ></script>
-<script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script type="text/javascript">
     @if(Session::has('message'))
     let type = "{{ Session::get('alert-type','info') }}"
     switch(type){
@@ -70,5 +74,6 @@
     }
     @endif
 </script>
+@yield('js')
 </body>
 </html>

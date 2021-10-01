@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\BrandController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\AdminController;
@@ -51,4 +52,14 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('/profile/edit', [AdminProfileController::class, 'edit'])->name('admin.profile.edit');
         Route::post('/password', [AdminProfileController::class, 'password'])->name('admin.password');
     });
+});
+
+// Admin Brand Router
+
+Route::prefix('brand')->group(function(){
+    Route::get('/view', [BrandController::class,'BrandView'])->name('brand.view');
+    Route::get('/edit/{id}', [BrandController::class,'BrandEdit'])->name('brand.edit');
+    Route::post('/store', [BrandController::class,'BrandStore'])->name('brand.store');
+    Route::post('/update', [BrandController::class,'BrandUpdate'])->name('brand.update');
+    Route::get('/delete/{id}', [BrandController::class,'BrandDelete'])->name('brand.delete');
 });
