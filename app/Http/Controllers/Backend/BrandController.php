@@ -24,9 +24,9 @@ class BrandController extends Controller
             'brand_name_vn' => 'required',
             'brand_image'   => 'required',
         ], [
-            'brand_name_en' => 'required',
-            'brand_name_vn' => 'required',
-            'brand_image'   => 'required',
+            'brand_name_en.required' => 'Enter brand name english',
+            'brand_name_vn.required' => 'Enter brand name vietnam',
+            'brand_image.required'   => 'Choose brand image',
         ]);
         $image    = $request->file('brand_image');
         $name_gen = hexdec(uniqid()).'.'.$image->getClientOriginalExtension();
