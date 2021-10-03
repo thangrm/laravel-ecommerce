@@ -62,8 +62,7 @@ class AdminController extends Controller
     public function login(LoginRequest $request)
     {
         return $this->loginPipeline($request)->then(function ($request) {
-            return view('admin.index');
-            //return app(LoginResponse::class);
+            return redirect()->route('admin.dashboard');
         });
     }
 
