@@ -7,7 +7,7 @@
                 <div class="col-8">
                     <div class="box">
                         <div class="box-header">
-                            <h4 class="box-title">Sub Category List</h4>
+                            <h4 class="box-title">Sub->SubCategory List</h4>
                         </div>
                         <div class="box-body">
                             <div class="table-responsive">
@@ -28,20 +28,20 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach($subCategories as $item)
+                                                    @foreach($subSubCategories as $item)
                                                     <tr role="row" class="odd">
                                                         <td>
-                                                            @foreach($categories as $category)
-                                                                @if($category->id == $item->category_id)
-                                                                    {{ $category->category_name_vn }}
+                                                            @foreach($subCategories as $subCategory)
+                                                                @if($subCategory->id == $item->subcategory_id)
+                                                                    {{ $subCategory->subcategory_name_vn }}
                                                                 @endif
                                                             @endforeach
                                                         </td>
-                                                        <td >{{ $item->subcategory_name_en }}</td>
-                                                        <td >{{ $item->subcategory_name_vn }}</td>
+                                                        <td >{{ $item->subsubcategory_name_en }}</td>
+                                                        <td >{{ $item->subsubcategory_name_vn }}</td>
                                                         <td >
-                                                            <a href="{{ route('subCategory.edit',$item->id) }}" class="btn btn-info mr-2 p-5">Edit</a>
-                                                            <a href="{{ route('subCategory.delete',$item->id) }}" class="btn btn-danger p-5 delete">Delete</a>
+                                                            <a href="{{ route('subSubCategory.edit',$item->id) }}" class="btn btn-info mr-2 p-5">Edit</a>
+                                                            <a href="{{ route('subSubCategory.delete',$item->id) }}" class="btn btn-danger p-5 delete">Delete</a>
                                                         </td>
                                                     </tr>
                                                     @endforeach
@@ -61,12 +61,12 @@
                 <div class="col-4">
                     <div class="box">
                         <div class="box-header">
-                            <h4 class="box-title">New Sub Category</h4>
+                            <h4 class="box-title">New SubCategory</h4>
                         </div>
                         <div class="box-body">
                             <div class="row">
                                 <div class="col">
-                                    <form action="{{ route('subCategory.store') }}" method="post" enctype="multipart/form-data">
+                                    <form action="{{ route('subSubCategory.store') }}" method="post" enctype="multipart/form-data">
                                         @csrf
                                         <div class="row">
                                             <div class="col-12">
@@ -86,20 +86,32 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <h5>Sub Category English <span class="text-danger">*</span> </h5>
+                                                    <h5>Sub Category<span class="text-danger">*</span></h5>
                                                     <div class="controls">
-                                                        <input type="text" name="subCategory_name_en" class="form-control">
-                                                        @error('subCategory_name_en')
+                                                        <select class="form-control" name="subcategory_id" id="subCategoryId">
+                                                            <option value="" disabled selected hidden>Select Sub Category</option>
+                                                        </select>
+                                                        @error('subcategory_id')
                                                         <span class="text-danger">{{ $message }}</span>
                                                         @enderror
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <h5>Sub Category Vietnam <span class="text-danger">*</span> </h5>
+                                                    <h5> Sub->SubCategory English <span class="text-danger">*</span> </h5>
                                                     <div class="controls">
-                                                        <input type="text" name="subCategory_name_vn" class="form-control">
-                                                        @error('subCategory_name_vn')
+                                                        <input type="text" name="subSubCategory_name_en" class="form-control">
+                                                        @error('subSubCategory_name_en')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <h5>Name Sub->SubCategory Vietnam <span class="text-danger">*</span> </h5>
+                                                    <div class="controls">
+                                                        <input type="text" name="subSubCategory_name_vn" class="form-control">
+                                                        @error('subSubCategory_name_vn')
                                                         <span class="text-danger">{{ $message }}</span>
                                                         @enderror
                                                     </div>
@@ -167,5 +179,26 @@
             })
         })
 
+        $(document).ready(function (){
+           $('#categoryId').on('change', function (){
+               let category_id = $(this).val();
+               if(category_id){
+                   $.ajax({
+                       url: "{{ url('/category/sub/ajax') }}/"+category_id,
+                       type: "GET",
+                       datatype: "json",
+                       success: function (data){
+                           data = JSON.parse(data)
+                           let selectSubCategories = $('#subCategoryId');
+                           selectSubCategories.empty();
+                           selectSubCategories.append('<option value="" disabled selected hidden>Select Sub Category</option>');
+                           $.each(data, function(key, value){
+                              selectSubCategories.append('<option value="'+value.id+'">'+value.subcategory_name_vn+'</option>');
+                           });
+                       }
+                   });
+               }
+           });
+        });
     </script>
 @endsection
