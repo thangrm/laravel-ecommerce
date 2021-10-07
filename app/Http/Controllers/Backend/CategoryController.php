@@ -19,20 +19,16 @@ class CategoryController extends Controller
     public function CategoryStore(Request $request)
     {
         $request->validate([
-                'category_name_en' => 'required',
-                'category_name_vn' => 'required',
+                'category_name' => 'required',
                 'category_icon'   => 'required',
         ], [
-                'category_name_en.required' => 'Enter category name english',
-                'category_name_vn.required' => 'Enter category name vietnam',
+                'category_name.required' => 'Enter category name',
                 'category_icon.required'   => 'Enter category icon',
         ]);
 
         Category::insert([
-                'category_name_en' => $request->category_name_en,
-                'category_name_vn' => $request->category_name_vn,
-                'category_slug_en' => Str::slug($request->category_name_en),
-                'category_slug_vn' => Str::slug($request->category_name_vn),
+                'category_name' => $request->category_name,
+                'category_slug' => Str::slug($request->category_name),
                 'category_icon'   => $request->category_icon,
         ]);
 
@@ -54,10 +50,8 @@ class CategoryController extends Controller
         $categoryId = $request->id;
         $category = Category::findOrFail($categoryId);
 
-        $category->category_name_en = $request->category_name_en;
-        $category->category_name_vn = $request->category_name_vn;
-        $category->category_slug_en = Str::slug($request->category_name_en);
-        $category->category_slug_vn = Str::slug($request->category_name_vn);
+        $category->category_name = $request->category_name;
+        $category->category_slug = Str::slug($request->category_name);
         $category->category_icon = $request->category_icon;
 
         $category->save();

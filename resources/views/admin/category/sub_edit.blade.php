@@ -24,31 +24,21 @@
                                                     <select class="form-control" name="category_id" id="categoryId">
                                                         @foreach($categories as $item)
                                                             <option value="{{ $item->id }}"
-                                                                @foreach($categories as $category)
-                                                                    @if($category->id == $item->category_id)
-                                                                        selected
-                                                                    @endif
-                                                                @endforeach
+                                                                @if($item->id == $subCategory->category_id)
+                                                                    selected
+                                                                @endif
                                                             >
-                                                                {{ $item->category_name_vn }}
+                                                                {{ $item->category_name }}
                                                             </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <h5>Sub Category Name English <span class="text-danger">*</span></h5>
+                                                    <h5>Sub Category Name <span class="text-danger">*</span></h5>
                                                     <div class="controls">
-                                                        <input type="text" name="subcategory_name_en" class="form-control"
-                                                               value="{{ $subCategory->subcategory_name_en }}" required >
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <h5>Sub Category Name Vietnam <span class="text-danger">*</span></h5>
-                                                    <div class="controls">
-                                                        <input type="text" name="subcategory_name_vn" class="form-control"
-                                                               value="{{ $subCategory->subcategory_name_vn }}" required >
+                                                        <input type="text" name="subcategory_name" class="form-control"
+                                                               value="{{ $subCategory->subcategory_name }}" required >
                                                     </div>
                                                 </div>
 

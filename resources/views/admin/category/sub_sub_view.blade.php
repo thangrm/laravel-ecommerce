@@ -22,8 +22,7 @@
                                                 <thead>
                                                     <tr role="row">
                                                         <th>Category Parent</th>
-                                                        <th>Category En</th>
-                                                        <th>Category Vn</th>
+                                                        <th>Category Name</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
@@ -33,12 +32,11 @@
                                                         <td>
                                                             @foreach($subCategories as $subCategory)
                                                                 @if($subCategory->id == $item->subcategory_id)
-                                                                    {{ $subCategory->subcategory_name_vn }}
+                                                                    {{ $subCategory->subcategory_name }}
                                                                 @endif
                                                             @endforeach
                                                         </td>
-                                                        <td >{{ $item->subsubcategory_name_en }}</td>
-                                                        <td >{{ $item->subsubcategory_name_vn }}</td>
+                                                        <td >{{ $item->subsubcategory_name }}</td>
                                                         <td >
                                                             <a href="{{ route('subSubCategory.edit',$item->id) }}" class="btn btn-info mr-2 p-5">Edit</a>
                                                             <a href="{{ route('subSubCategory.delete',$item->id) }}" class="btn btn-danger p-5 delete">Delete</a>
@@ -76,7 +74,7 @@
                                                         <select class="form-control" name="category_id" id="categoryId">
                                                             <option value="" disabled selected hidden>Select Category</option>
                                                             @foreach($categories as $item)
-                                                                <option value="{{ $item->id }}">{{ $item->category_name_vn }}</option>
+                                                                <option value="{{ $item->id }}">{{ $item->category_name }}</option>
                                                             @endforeach
                                                         </select>
                                                         @error('category_id')
@@ -98,24 +96,15 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <h5> Sub->SubCategory English <span class="text-danger">*</span> </h5>
+                                                    <h5> Sub->SubCategory Name <span class="text-danger">*</span> </h5>
                                                     <div class="controls">
-                                                        <input type="text" name="subSubCategory_name_en" class="form-control">
-                                                        @error('subSubCategory_name_en')
+                                                        <input type="text" name="subSubCategory_name" class="form-control">
+                                                        @error('subSubCategory_name')
                                                         <span class="text-danger">{{ $message }}</span>
                                                         @enderror
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group">
-                                                    <h5>Name Sub->SubCategory Vietnam <span class="text-danger">*</span> </h5>
-                                                    <div class="controls">
-                                                        <input type="text" name="subSubCategory_name_vn" class="form-control">
-                                                        @error('subSubCategory_name_vn')
-                                                        <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="text-xs-right text-right">
@@ -193,7 +182,7 @@
                            selectSubCategories.empty();
                            selectSubCategories.append('<option value="" disabled selected hidden>Select Sub Category</option>');
                            $.each(data, function(key, value){
-                              selectSubCategories.append('<option value="'+value.id+'">'+value.subcategory_name_vn+'</option>');
+                              selectSubCategories.append('<option value="'+value.id+'">'+value.subcategory_name+'</option>');
                            });
                        }
                    });

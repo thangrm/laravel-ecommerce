@@ -21,22 +21,11 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="form-group">
-                                                    <h5>Brand Name English <span class="text-danger">*</span></h5>
+                                                    <h5>Brand Name <span class="text-danger">*</span></h5>
                                                     <div class="controls">
-                                                        <input type="text" name="brand_name_en" class="form-control"
-                                                               value="{{ $brand->brand_name_en }}">
-                                                        @error('brand_name_en')
-                                                        <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <h5>Brand Name Vietnam <span class="text-danger">*</span></h5>
-                                                    <div class="controls">
-                                                        <input type="text" name="brand_name_vn" class="form-control"
-                                                               value="{{ $brand->brand_name_vn }}">
-                                                        @error('brand_name_vn')
+                                                        <input type="text" name="brand_name" class="form-control"
+                                                               value="{{ $brand->brand_name }}" required>
+                                                        @error('brand_name')
                                                         <span class="text-danger">{{ $message }}</span>
                                                         @enderror
                                                     </div>

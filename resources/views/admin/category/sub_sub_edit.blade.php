@@ -26,7 +26,7 @@
                                                             @foreach($categories as $item)
                                                                 <option value="{{ $item->id }}"
                                                                 {{ $categoryID == $item->id ? 'selected' : '' }}
-                                                                >{{ $item->category_name_vn }}</option>
+                                                                >{{ $item->category_name }}</option>
                                                             @endforeach
                                                         </select>
                                                         @error('category_id')
@@ -42,7 +42,7 @@
                                                             @foreach($subCategories as $item)
                                                                 <option value="{{ $item->id }}"
                                                                     {{ $subSubCategory->subcategory_id == $item->id ? 'selected' : '' }}
-                                                                >{{ $item->subcategory_name_vn }}</option>
+                                                                >{{ $item->subcategory_name }}</option>
                                                             @endforeach
                                                         </select>
                                                         @error('subcategory_id')
@@ -52,18 +52,10 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <h5>Sub Category Name English <span class="text-danger">*</span></h5>
+                                                    <h5>Sub Category Name <span class="text-danger">*</span></h5>
                                                     <div class="controls">
-                                                        <input type="text" name="subSubCategory_name_en" class="form-control"
-                                                               value="{{ $subSubCategory->subsubcategory_name_en }}" required >
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <h5>Sub Category Name Vietnam <span class="text-danger">*</span></h5>
-                                                    <div class="controls">
-                                                        <input type="text" name="subSubCategory_name_vn" class="form-control"
-                                                               value="{{ $subSubCategory->subsubcategory_name_vn }}" required >
+                                                        <input type="text" name="subSubCategory_name" class="form-control"
+                                                               value="{{ $subSubCategory->subsubcategory_name }}" required >
                                                     </div>
                                                 </div>
 
@@ -107,7 +99,7 @@
                             selectSubCategories.empty();
                             selectSubCategories.append('<option value="" disabled selected hidden>Select Sub Category</option>');
                             $.each(data, function(key, value){
-                                selectSubCategories.append('<option value="'+value.id+'">'+value.subcategory_name_vn+'</option>');
+                                selectSubCategories.append('<option value="'+value.id+'">'+value.subcategory_name+'</option>');
                             });
                         }
                     });

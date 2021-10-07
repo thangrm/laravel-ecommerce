@@ -21,8 +21,7 @@
                                                    aria-describedby="complex_header_info">
                                                 <thead>
                                                     <tr role="row">
-                                                        <th>Brand EN</th>
-                                                        <th>Brand VN</th>
+                                                        <th>Brand Name</th>
                                                         <th>Image</th>
                                                         <th>Action</th>
                                                     </tr>
@@ -30,8 +29,7 @@
                                                 <tbody>
                                                     @foreach($brands as $item)
                                                     <tr role="row" class="odd">
-                                                        <td >{{ $item->brand_name_en }}</td>
-                                                        <td >{{ $item->brand_name_vn }}</td>
+                                                        <td >{{ $item->brand_name }}</td>
                                                         <td ><img src="{{ asset($item->brand_image) }}" style="max-height: 50px;"></td>
                                                         <td >
                                                             <a href="{{ route('brand.edit',$item->id) }}" class="btn btn-info mr-2 p-5">Edit</a>
@@ -65,20 +63,10 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="form-group">
-                                                    <h5>Brand Name English <span class="text-danger">*</span> </h5>
+                                                    <h5>Brand Name <span class="text-danger">*</span> </h5>
                                                     <div class="controls">
-                                                        <input type="text" name="brand_name_en" class="form-control">
-                                                        @error('brand_name_en')
-                                                        <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <h5>Brand Name Vietnam <span class="text-danger">*</span> </h5>
-                                                    <div class="controls">
-                                                        <input type="text" name="brand_name_vn" class="form-control">
-                                                        @error('brand_name_vn')
+                                                        <input type="text" name="brand_name" class="form-control">
+                                                        @error('brand_name')
                                                         <span class="text-danger">{{ $message }}</span>
                                                         @enderror
                                                     </div>

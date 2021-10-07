@@ -21,18 +21,13 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="form-group">
-                                                    <h5>Category Name English <span class="text-danger">*</span></h5>
+                                                    <h5>Category Name <span class="text-danger">*</span></h5>
                                                     <div class="controls">
-                                                        <input type="text" name="category_name_en" class="form-control"
-                                                               value="{{ $category->category_name_en }}" required >
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <h5>Category Name Vietnam <span class="text-danger">*</span></h5>
-                                                    <div class="controls">
-                                                        <input type="text" name="category_name_vn" class="form-control"
-                                                               value="{{ $category->category_name_vn }}" required >
+                                                        <input type="text" name="category_name" class="form-control"
+                                                               value="{{ $category->category_name }}" required >
+                                                        @error('category_name')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                 </div>
 

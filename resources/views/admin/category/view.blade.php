@@ -22,8 +22,7 @@
                                                 <thead>
                                                     <tr role="row">
                                                         <th>Category Icon</th>
-                                                        <th>Category En</th>
-                                                        <th>Category Vn</th>
+                                                        <th>Category Name</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
@@ -31,8 +30,7 @@
                                                     @foreach($categories as $item)
                                                     <tr role="row" class="odd">
                                                         <td><span><i class="{{ $item->category_icon }}"></i></span></td>
-                                                        <td >{{ $item->category_name_en }}</td>
-                                                        <td >{{ $item->category_name_vn }}</td>
+                                                        <td >{{ $item->category_name }}</td>
                                                         <td >
                                                             <a href="{{ route('category.edit',$item->id) }}" class="btn btn-info mr-2 p-5">Edit</a>
                                                             <a href="{{ route('category.delete',$item->id) }}" class="btn btn-danger p-5 delete">Delete</a>
@@ -65,20 +63,10 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="form-group">
-                                                    <h5>Category English <span class="text-danger">*</span> </h5>
+                                                    <h5>Category Name <span class="text-danger">*</span> </h5>
                                                     <div class="controls">
-                                                        <input type="text" name="category_name_en" class="form-control">
-                                                        @error('category_name_en')
-                                                        <span class="text-danger">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <h5>Category Vietnam <span class="text-danger">*</span> </h5>
-                                                    <div class="controls">
-                                                        <input type="text" name="category_name_vn" class="form-control">
-                                                        @error('category_name_vn')
+                                                        <input type="text" name="category_name" class="form-control">
+                                                        @error('category_name')
                                                         <span class="text-danger">{{ $message }}</span>
                                                         @enderror
                                                     </div>

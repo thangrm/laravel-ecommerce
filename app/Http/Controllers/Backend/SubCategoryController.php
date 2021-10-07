@@ -13,7 +13,7 @@ class SubCategoryController extends Controller
 {
     public function SubCategoryView()
     {
-        $categories = Category::orderBy('category_name_vn','ASC')->get();
+        $categories = Category::orderBy('category_name','ASC')->get();
         $subCategories = SubCategory::latest()->get();
         return view('admin.category.sub_view', compact(['categories','subCategories']));
     }
@@ -22,20 +22,16 @@ class SubCategoryController extends Controller
     {
         $request->validate([
                 'category_id'   => 'required',
-                'subCategory_name_en' => 'required',
-                'subCategory_name_vn' => 'required',
+                'subCategory_name' => 'required',
         ], [
                 'category_id.required'   => 'Choose category ID',
-                'subCategory_name_en.required' => 'Enter sub category name english',
-                'subCategory_name_vn.required' => 'Enter sub category name vietnam',
+                'subCategory_name.required' => 'Enter sub category name',
         ]);
 
         SubCategory::insert([
                 'category_id'   => $request->category_id,
-                'subCategory_name_en' => $request->subCategory_name_en,
-                'subCategory_name_vn' => $request->subCategory_name_vn,
-                'subCategory_slug_en' => Str::slug($request->subCategory_name_en),
-                'subCategory_slug_vn' => Str::slug($request->subCategory_name_vn),
+                'subCategory_name' => $request->subCategory_name,
+                'subCategory_slug' => Str::slug($request->subCategory_name),
         ]);
 
         $notification = array(
@@ -47,7 +43,7 @@ class SubCategoryController extends Controller
 
     public function SubCategoryEdit($id)
     {
-        $categories = Category::orderBy('category_name_vn','ASC')->get();
+        $categories = Category::orderBy('category_name','ASC')->get();
         $subCategory = SubCategory::findOrFail($id);
         return view('admin.category.sub_edit', compact(['categories','subCategory']));
     }
@@ -58,10 +54,8 @@ class SubCategoryController extends Controller
         $subCategory = SubCategory::findOrFail($subCategoryId);
 
         $subCategory->category_id = $request->category_id;
-        $subCategory->subcategory_name_en = $request->subcategory_name_en;
-        $subCategory->subcategory_name_vn = $request->subcategory_name_vn;
-        $subCategory->subcategory_slug_en = Str::slug($request->subcategory_name_en);
-        $subCategory->subcategory_slug_vn = Str::slug($request->subcategory_name_vn);
+        $subCategory->subcategory_name = $request->subcategory_name;
+        $subCategory->subcategory_slug = Str::slug($request->subcategory_name);
 
         $subCategory->save();
         $notification = array(
@@ -85,16 +79,18 @@ class SubCategoryController extends Controller
 
     public function GetSubCategory($category_id)
     {
-        $subCategories = SubCategory::where('category_id', $category_id)->orderBy('subcategory_name_vn', 'ASC')->get();
+        $subCategories = SubCategory::where('category_id', $category_id)->orderBy('subcategory_name', 'ASC')->get();
         return json_encode($subCategories);
     }
+
     /*
      * THAT FOR SUB - SUB CATEGORY
      */
+
     public function SubSubCategoryView()
     {
-        $categories = Category::orderBy('category_name_vn','ASC')->get();
-        $subCategories = SubCategory::orderBy('subcategory_name_vn','ASC')->get();
+        $categories = Category::orderBy('category_name','ASC')->get();
+        $subCategories = SubCategory::orderBy('subcategory_name','ASC')->get();
         $subSubCategories = SubSubCategory::latest()->get();
         return view('admin.category.sub_sub_view', compact(['categories','subCategories','subSubCategories']));
     }
@@ -104,21 +100,17 @@ class SubCategoryController extends Controller
         $request->validate([
                 'category_id'   => 'required',
                 'subcategory_id'   => 'required',
-                'subSubCategory_name_en' => 'required',
-                'subSubCategory_name_vn' => 'required',
+                'subSubCategory_name' => 'required',
         ], [
                 'category_id.required'   => 'Choose category ID',
                 'subcategory_id.required'   => 'Choose sub category ID',
-                'subSubCategory_name_en.required' => 'Enter sub category name english',
-                'subSubCategory_name_vn.required' => 'Enter sub category name vietnam',
+                'subSubCategory_name.required' => 'Enter sub category name english',
         ]);
 
         SubSubCategory::insert([
                 'subcategory_id'   => $request->subcategory_id,
-                'subsubcategory_name_en' => $request->subSubCategory_name_en,
-                'subsubcategory_name_vn' => $request->subSubCategory_name_vn,
-                'subsubcategory_slug_en' => Str::slug($request->subSubCategory_name_en),
-                'subsubcategory_slug_vn' => Str::slug($request->subSubCategory_name_vn),
+                'subsubcategory_name' => $request->subSubCategory_name,
+                'subsubcategory_slug' => Str::slug($request->subSubCategory_name),
         ]);
 
         $notification = array(
@@ -133,8 +125,8 @@ class SubCategoryController extends Controller
         $subSubCategory = SubSubCategory::findOrFail($id);
         $categoryID = $subSubCategory->subcategory->category_id;
 
-        $categories = Category::orderBy('category_name_vn','ASC')->get();
-        $subCategories = $subCategories = SubCategory::where('category_id', $categoryID)->orderBy('subcategory_name_vn', 'ASC')->get();
+        $categories = Category::orderBy('category_name','ASC')->get();
+        $subCategories = $subCategories = SubCategory::where('category_id', $categoryID)->orderBy('subcategory_name', 'ASC')->get();
         return view('admin.category.sub_sub_edit', compact(['categories','subCategories','subSubCategory','categoryID']));
     }
 
@@ -142,10 +134,8 @@ class SubCategoryController extends Controller
     {
         $subSubCategory = SubSubCategory::findOrFail($request->id);
         $subSubCategory->subcategory_id = $request->subcategory_id;
-        $subSubCategory->subsubcategory_name_en = $request->subSubCategory_name_en;
-        $subSubCategory->subsubcategory_name_vn = $request->subSubCategory_name_vn;
-        $subSubCategory->subsubcategory_slug_en = Str::slug($request->subSubCategory_name_en);
-        $subSubCategory->subsubcategory_slug_vn = Str::slug($request->subSubcategory_name_vn);
+        $subSubCategory->subsubcategory_name = $request->subSubCategory_name;
+        $subSubCategory->subsubcategory_slug = Str::slug($request->subSubcategory_name);
 
         $subSubCategory->save();
         $notification = array(

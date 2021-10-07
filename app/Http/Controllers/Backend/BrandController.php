@@ -20,24 +20,20 @@ class BrandController extends Controller
     public function BrandStore(Request $request)
     {
         $request->validate([
-            'brand_name_en' => 'required',
-            'brand_name_vn' => 'required',
+            'brand_name' => 'required',
             'brand_image'   => 'required',
         ], [
-            'brand_name_en.required' => 'Enter brand name english',
-            'brand_name_vn.required' => 'Enter brand name vietnam',
+            'brand_name.required' => 'Enter brand name english',
             'brand_image.required'   => 'Choose brand image',
         ]);
         $image    = $request->file('brand_image');
         $name_gen = hexdec(uniqid()).'.'.$image->getClientOriginalExtension();
-        Image::make($image)->resize(300, 300)->save('upload/brand/'.$name_gen);
+        Image::make($image)->resize(300,null)->save('upload/brand/'.$name_gen);
         $save_url = 'upload/brand/'.$name_gen;
 
         Brand::insert([
-            'brand_name_en' => $request->brand_name_en,
-            'brand_name_vn' => $request->brand_name_vn,
-            'brand_slug_en' => Str::slug($request->brand_name_en),
-            'brand_slug_vn' => Str::slug($request->brand_name_vn),
+            'brand_name' => $request->brand_name,
+            'brand_slug' => Str::slug($request->brand_name),
             'brand_image'   => $save_url,
         ]);
 
@@ -60,10 +56,8 @@ class BrandController extends Controller
         $old_image = $request->old_image;
         $brand = Brand::findOrFail($brandId);
 
-        $brand->brand_name_en = $request->brand_name_en;
-        $brand->brand_name_vn = $request->brand_name_vn;
-        $brand->brand_slug_en = Str::slug($request->brand_name_en);
-        $brand->brand_slug_vn = Str::slug($request->brand_name_vn);
+        $brand->brand_name = $request->brand_name;
+        $brand->brand_slug = Str::slug($request->brand_name);
 
         if($request->file('brand_image')) {
             unlink($old_image);
