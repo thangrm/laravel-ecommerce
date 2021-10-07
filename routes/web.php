@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\CategoryController;
+use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\SubCategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\IndexController;
@@ -94,6 +95,12 @@ Route::prefix('category')->group(function(){
         });
     });
 });
+
+// Admin Product Router
+Route::prefix('product')->group(function(){
+    Route::get('/add', [ProductController::class,'addProduct'])->name('product.add');
+});
+
 
 
 
