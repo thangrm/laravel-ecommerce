@@ -92,6 +92,8 @@ Route::prefix('category')->group(function(){
             Route::post('/store', [SubCategoryController::class,'SubSubCategoryStore'])->name('subSubCategory.store');
             Route::post('/update', [SubCategoryController::class,'SubSubCategoryUpdate'])->name('subSubCategory.update');
             Route::get('/delete/{id}', [SubCategoryController::class,'SubSubCategoryDelete'])->name('subSubCategory.delete');
+
+            Route::get('/ajax/{subCategory_id}', [SubCategoryController::class,'GetSubSubCategory'])->name('subSubCategory.ajax');
         });
     });
 });
@@ -99,6 +101,7 @@ Route::prefix('category')->group(function(){
 // Admin Product Router
 Route::prefix('product')->group(function(){
     Route::get('/add', [ProductController::class,'addProduct'])->name('product.add');
+    Route::post('/store', [ProductController::class,'storeProduct'])->name('product.store');
 });
 
 

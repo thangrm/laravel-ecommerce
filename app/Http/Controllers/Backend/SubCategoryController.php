@@ -156,4 +156,10 @@ class SubCategoryController extends Controller
         );
         return redirect()->route('subSubCategory.view')->with($notification);
     }
+
+    public function GetSubSubCategory($subCategory_id)
+    {
+        $subSubCategories = SubSubCategory::where('subcategory_id', $subCategory_id)->orderBy('subsubcategory_name', 'ASC')->get();
+        return json_encode($subSubCategories);
+    }
 }

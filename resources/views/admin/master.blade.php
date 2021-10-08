@@ -45,6 +45,7 @@
 <script src="{{ asset('backend/js/vendors.min.js') }}"></script>
 <script src="{{ asset('assets/icons/feather-icons/feather.min.js') }}"></script>
 <script src="{{ asset('assets/vendor_components/datatable/datatables.min.js') }}"></script>
+<script src="{{ asset('assets/vendor_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.js') }}"></script>
 <script src="{{ asset('backend/js/pages/data-table.js') }}"></script>
 
 <!-- RM Admin App -->
