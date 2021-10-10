@@ -20,7 +20,7 @@
                                                 <div class="form-group">
                                                     <h5><label for="productName">Product Name <span class="text-danger">*</span></label></h5>
                                                     <div class="controls">
-                                                        <input type="text" id="productName" name="product_name" class="form-control">
+                                                        <input type="text" id="productName" name="product_name" class="form-control" value="{{ old('product_name') }}">
                                                         @error('product_name')
                                                         <span class="text-danger">{{ $message }}</span>
                                                         @enderror
@@ -89,9 +89,9 @@
                                                         </div>
 
                                                         <div class="col-4">
-                                                            <h5><label for="productCode">Product Code <span class="text-danger">*</span></label></h5>
+                                                            <h5><label for="productCode">Product Code</label></h5>
                                                             <div class="controls">
-                                                                <input type="text" id="productCode" name="product_code" class="form-control">
+                                                                <input type="text" id="productCode" name="product_code" class="form-control" value="{{ old('product_code') }}">
                                                                 @error('product_code')
                                                                 <span class="text-danger">{{ $message }}</span>
                                                                 @enderror
@@ -101,7 +101,7 @@
                                                         <div class="col-4">
                                                             <h5><label for="productQuantity">Product Quantity <span class="text-danger">*</span></label></h5>
                                                             <div class="controls">
-                                                                <input type="number" id="productQuantity" name="product_quantity" class="form-control">
+                                                                <input type="number" id="productQuantity" name="product_quantity" class="form-control" value="{{ old('product_quantity') }}">
                                                                 @error('product_quantity')
                                                                 <span class="text-danger">{{ $message }}</span>
                                                                 @enderror
@@ -118,15 +118,17 @@
                                                         <div>
                                                             <img id="showImgThumbnail" style="max-height: 100px; margin: 10px 2px">
                                                         </div>
+                                                        @error('product_thumbnail')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <h5><label for="productImage">Product Image <span class="text-danger">*</span></label></h5>
+                                                    <h5><label for="productImage">Product Image</label></h5>
                                                     <div class="controls">
-                                                        <input type="file" id="productImage" name="product_image" class="form-control" multiple>
+                                                        <input type="file" id="productImage" name="product_image[]" class="form-control" multiple>
                                                         <div id="showProductImg" >
-                                                            <img id="showImgThumbnail" style="max-height: 100px; margin: 10px 2px">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -134,10 +136,10 @@
                                                 <div class="form-group">
                                                     <div class="row">
                                                         <div class="col-4">
-                                                            <h5><label for="productPrice">Price <span class="text-danger">*</span></label></h5>
+                                                            <h5><label for="sellingPrice">Price <span class="text-danger">*</span></label></h5>
                                                             <div class="controls">
-                                                                <input type="number" id="productPrice" name="product_price" class="form-control">
-                                                                @error('product_price')
+                                                                <input type="number" id="sellingPrice" name="selling_price" class="form-control" value="{{ old('selling_price') }}">
+                                                                @error('selling_price')
                                                                 <span class="text-danger">{{ $message }}</span>
                                                                 @enderror
                                                             </div>
@@ -146,7 +148,7 @@
                                                         <div class="col-4">
                                                             <h5><label for="discountPrice">Discount Price<span class="text-danger">*</span></label></h5>
                                                             <div class="controls">
-                                                                <input type="number" id="discountPrice" name="discount_price" class="form-control">
+                                                                <input type="number" id="discountPrice" name="discount_price" class="form-control" value="{{ old('discount_price') }}">
                                                                 @error('discount_price')
                                                                 <span class="text-danger">{{ $message }}</span>
                                                                 @enderror
@@ -154,9 +156,9 @@
                                                         </div>
 
                                                         <div class="col-4">
-                                                            <h5><label for="productTags">Product Quantity <span class="text-danger">*</span></label></h5>
+                                                            <h5><label for="productTags">Product Tags</label></h5>
                                                             <div class="controls">
-                                                                <input type="text" id="productTags" name="product_tags" class="form-control" value="Lorem,Ipsum,Amet" data-role="tagsinput">
+                                                                <input type="text" id="productTags" name="product_tags" class="form-control" value="{{old('product_tags')}}" data-role="tagsinput">
                                                                 @error('product_tags')
                                                                 <span class="text-danger">{{ $message }}</span>
                                                                 @enderror
@@ -166,8 +168,45 @@
 
                                                 </div>
 
+                                                <div class="form-group">
+                                                    <h5><label for="productDescription">Description <span class="text-danger">*</span></label></h5>
+                                                    <div class="controls">
+                                                        <textarea type="file" id="productDescription" name="product_description" class="form-control" style="height: 150px"></textarea>
+                                                        @error('product_description')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <input type="checkbox" name="hot_deals" id="hotDeals" class="filled-in">
+                                                            <label for="hotDeals">Hot deals</label>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <input type="checkbox" name="special_offer" id="specialOffer" class="filled-in">
+                                                            <label for="specialOffer">Special Offer</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <input type="checkbox" name="featured" id="featured" class="filled-in">
+                                                            <label for="featured">Featured</label>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <input type="checkbox" name="special_deals" id="specialDeals" class="filled-in">
+                                                            <label for="specialDeals">Special Deals</label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
                                                 <div class="form-group mt-50">
                                                     <h5><label for="tableClass">Product Classification</label></h5>
+                                                    @error('classification')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
                                                     <div class="box">
                                                         <div class="box-body no-padding">
                                                             <div class="table-responsive">
@@ -266,6 +305,7 @@
             });
 
             $('#productImage').change(function (e){
+                $('#showProductImg').empty();
                 if (this.files && this.files[0]) {
                     for (let i = 0; i < this.files.length; i++) {
                         let reader = new FileReader();
