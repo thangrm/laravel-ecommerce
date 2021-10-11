@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\ProductController;
+use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\SubCategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\IndexController;
@@ -117,6 +118,15 @@ Route::middleware(['auth:sanctum,admin', 'verified'])->group(function () {
         Route::post('/classification/update/', [ProductController::class, 'updateClassification'])->name('product.classification.update');
         Route::post('/image/store/', [ProductController::class, 'addImage'])->name('product.image.store');
         Route::get('/image/delete/{id}', [ProductController::class, 'deleteImage'])->name('product.image.delete');
+    });
+
+    // Admin Product Router
+    Route::prefix('slide')->group(function () {
+        Route::get('/add', [SliderController::class, 'viewSlide'])->name('slide.view');
+        Route::post('/store', [SliderController::class, 'storeSlide'])->name('slide.store');
+        Route::get('/active/{id}', [SliderController::class, 'activeSlide'])->name('slide.active');
+        Route::get('/inactive/{id}', [SliderController::class, 'inactiveSlide'])->name('slide.inactive');
+        Route::get('/delete/{id}', [SliderController::class, 'deleteSlide'])->name('slide.delete');
     });
 });
 
