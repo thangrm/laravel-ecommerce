@@ -22,7 +22,7 @@ use App\Http\Controllers\Admin\AdminProfileController;
 */
 
 // User Router
-Route::get('/', [IndexController::class,'index']);
+Route::get('/', [IndexController::class,'index'])->name('index');
 
 Route::group(['prefix' => 'user'], function () {
     Route::middleware(['auth:sanctum,web', 'verified'])->group(function () {
