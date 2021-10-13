@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductImg;
 use App\Models\Slider;
 use App\Models\SubCategory;
 use App\Models\SubSubCategory;
@@ -21,7 +22,20 @@ class IndexController extends Controller
         $subSubCategories = SubSubCategory::orderBy('subsubcategory_name', 'ASC')->get();
         $sliders = Slider::where('status',1)->latest()->get();
         $products = Product::where('status',1)->orderBy('id','DESC')->limit(6)->get();
-        return view('frontend.index',compact(['categories','subCategories','subSubCategories','sliders','products']));
+        $features = Product::where([['status',1],
+                                    ['featured',1]])->orderBy('id','DESC')->limit(6)->get();
+
+        $hotDeals = Product::where([['status',1],
+                                    ['hot_deals',1]])->orderBy('id','DESC')->limit(3)->get();
+
+        $specialOffers = Product::where([['status',1],
+                                    ['special_offer',1]])->orderBy('id','DESC')->limit(3)->get();
+
+        $specialDeals = Product::where([['status',1],
+                ['special_deals',1]])->orderBy('id','DESC')->limit(3)->get();
+
+        return view('frontend.index',compact(['categories','subCategories','subSubCategories',
+                'sliders','products','features','hotDeals','specialOffers','specialDeals']));
     }
 
     public function userLogout(){
@@ -82,5 +96,11 @@ class IndexController extends Controller
             );
             return redirect()->back()->with($notification);
         }
+    }
+
+    public function productDetails($id){
+        $product = Product::findOrFail($id);
+        $multiImage = ProductImg::where('product_id',$id)->get();
+        return view('frontend.product.product_details',compact('product','multiImage'));
     }
 }

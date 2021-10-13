@@ -21,9 +21,11 @@ use App\Http\Controllers\Admin\AdminProfileController;
 |
 */
 
-// User Router
-Route::get('/', [IndexController::class,'index'])->name('index');
 
+Route::get('/', [IndexController::class,'index'])->name('index');
+Route::get('/product/details/{id}/{slug}', [IndexController::class,'productDetails'])->name('product.details');
+
+// User Router
 Route::group(['prefix' => 'user'], function () {
     Route::middleware(['auth:sanctum,web', 'verified'])->group(function () {
         Route::get('/logout', [IndexController::class, 'userLogout'])->name('user.logout');
