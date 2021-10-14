@@ -189,7 +189,7 @@ class ProductController extends Controller
         $subCategories = SubCategory::where('category_id', $categoryID)->orderBy('subcategory_name', 'ASC')->get();
         $subSubCategories = SubSubCategory::where('subcategory_id', $subCategoryID)->orderBy('subsubcategory_name', 'ASC')->get();
         $brands = Brand::orderBy('brand_name','ASC')->get();
-        $classifications = ProductClassification::orderBy('name','ASC')->get();
+        $classifications = ProductClassification::where('product_id',$id)->orderBy('name','ASC')->get();
         $productImage = ProductImg::where('product_id',$product->id)->get();
 
         return view('admin.product.product_edit', compact(['product','categories','subCategories','subSubCategories','brands','classifications','productImage']));
@@ -271,6 +271,11 @@ class ProductController extends Controller
                 'alert-type' => 'info',
         );
         return redirect()->back()->with($notification);
+    }
+
+    public function getClassification($id){
+        $classification = ProductClassification::findOrFail($id);
+        return json_encode($classification);
     }
 
     // Product Image

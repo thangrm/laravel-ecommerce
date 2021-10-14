@@ -97,10 +97,10 @@
                                 <div class="cart-item product-summary">
                                     <div class="row">
                                         <div class="col-xs-4">
-                                            <div class="image"> <a href="detail.html"><img src="assets/images/cart.jpg" alt=""></a> </div>
+                                            <div class="image"> <a href="#"><img src="{{ asset('frontend/assets/images/cart.jpg') }}" alt=""></a> </div>
                                         </div>
                                         <div class="col-xs-7">
-                                            <h3 class="name"><a href="index.php?page-detail">Simple Product</a></h3>
+                                            <h3 class="name"><a href="#">Simple Product</a></h3>
                                             <div class="price">$600.00</div>
                                         </div>
                                         <div class="col-xs-1 action"> <a href="#"><i class="fa fa-trash"></i></a> </div>
@@ -168,7 +168,7 @@
                                                                 $subSubCategories = \App\Models\SubSubCategory::where('subcategory_id',$subCategory->id)->orderBy('subsubcategory_name','ASC')->get();
                                                             @endphp
                                                             @foreach($subSubCategories as $subSubCategory)
-                                                            <li><a href="#">{{$subSubCategory->subsubcategory_name}}</a></li>
+                                                            <li><a href="{{ route('product.view.category',[$subSubCategory->id,$subSubCategory->subsubcategory_slug]) }}">{{$subSubCategory->subsubcategory_name}}</a></li>
                                                             @endforeach
                                                             <!-- End SubSubCategory foreach -->
                                                         </ul>
@@ -177,7 +177,7 @@
                                                     @endforeach
                                                     <!-- End SubCategory foreach -->
 
-                                                    <div class="col-xs-12 col-sm-6 col-md-4 col-menu banner-image"> <img class="img-responsive" src="assets/images/banners/top-menu-banner.jpg" alt=""> </div>
+                                                    <div class="col-xs-12 col-sm-6 col-md-4 col-menu banner-image"> <img class="img-responsive" src="{{ asset('frontend/assets/images/banners/top-menu-banner.jpg') }}" alt=""> </div>
                                                     <!-- /.yamm-content -->
                                                 </div>
                                             </div>

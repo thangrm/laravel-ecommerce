@@ -54,8 +54,8 @@
 }
 
 /* mouse grab icon */
-.grabbing { 
-    cursor:url(grabbing.png) 8 8, move;
+.grabbing {
+    cursor:url(public/frontend/assets/images/grabbing.png) 8 8, move;
 }
 
 /* fix */

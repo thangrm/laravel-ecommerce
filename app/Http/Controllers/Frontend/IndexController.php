@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductClassification;
 use App\Models\ProductImg;
 use App\Models\Slider;
 use App\Models\SubCategory;
@@ -101,6 +102,24 @@ class IndexController extends Controller
     public function productDetails($id){
         $product = Product::findOrFail($id);
         $multiImage = ProductImg::where('product_id',$id)->get();
-        return view('frontend.product.product_details',compact('product','multiImage'));
+        $classifications = ProductClassification::where('product_id',$id)->get();
+        $hotDeals = Product::where([['status',1],
+                ['hot_deals',1]])->orderBy('id','DESC')->limit(3)->get();
+        $specialDeals = Product::where([['status',1],
+                ['special_deals',1]])->orderBy('id','DESC')->limit(6)->get();
+        return view('frontend.product.product_details',compact(['product','multiImage',
+                'classifications','hotDeals','specialDeals']));
+    }
+
+    public function CategoryWiseProduct($subSubCategory_id){
+        $categories = Category::orderBy('category_name','ASC')->get();
+        $subCategories = SubCategory::orderBy('subcategory_name', 'ASC')->get();
+        $subSubCategories = SubSubCategory::orderBy('subsubcategory_name', 'ASC')->get();
+        $subSubCategory = SubSubCategory::findOrFail($subSubCategory_id);
+        $products = Product::where([['status','=',1],
+                                    ['subsubcategory_id','=',$subSubCategory_id]])
+                    ->orderBy('products.id','DESC')->paginate(1);
+        return view('frontend.category.category_view',compact(['categories','subCategories','subSubCategories',
+                    'products','subSubCategory']));
     }
 }
