@@ -8,6 +8,7 @@
     <meta name="author" content="">
     <meta name="keywords" content="MediaCenter, Template, eCommerce">
     <meta name="robots" content="all">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>@yield('title')</title>
 
     <!-- Bootstrap Core CSS -->
@@ -32,6 +33,7 @@
     <link href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,700' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,600,600italic,700,700italic,800' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <script src="{{ asset('frontend/assets/js/jquery-1.11.1.min.js') }}"></script>
 </head>
 <body class="cnt-home">
 <!-- ============================================== HEADER ============================================== -->
@@ -54,7 +56,6 @@
 <!-- For demo purposes – can be removed on production : End -->
 
 <!-- JavaScripts placed at the end of the document so the pages load faster -->
-<script src="{{ asset('frontend/assets/js/jquery-1.11.1.min.js') }}"></script>
 <script src="{{ asset('frontend/assets/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('frontend/assets/js/bootstrap-hover-dropdown.min.js') }}"></script>
 <script src="{{ asset('frontend/assets/js/owl.carousel.min.js') }}"></script>
@@ -68,6 +69,12 @@
 <script src="{{ asset('frontend/assets/js/scripts.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" type="text/javascript" ></script>
 <script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     @if(Session::has('message'))
     let type = "{{ Session::get('alert-type','info') }}"
     switch(type){
@@ -75,70 +82,20 @@
             toastr.info("{{ Session::get('message') }}");
             break;
 
-        case 'success':
-            toastr.success("{{ Session::get('message') }}");
-            break;
+    case 'success':
+        toastr.success("{{ Session::get('message') }}");
+        break;
 
-        case 'warning':
-            toastr.warning("{{ Session::get('message') }}");
-            break;
+    case 'warning':
+        toastr.warning("{{ Session::get('message') }}");
+        break;
 
-        case 'error':
-            toastr.error("{{ Session::get('message') }}");
-            break;
+    case 'error':
+        toastr.error("{{ Session::get('message') }}");
+        break;
     }
     @endif
 
-    function productView(id){
-        $.ajax({
-            url: '{{ url('ajax/product') }}'+'/'+id,
-            type: "GET",
-            success: function (data){
-                let hostUrl = '{{asset('')}}';
-                data = JSON.parse(data);
-                let price;
-                if(data.discount_price != null){
-                    price = data.discount_price;
-                }else{
-                    price = data.selling_price;
-                }
-
-                let checkClassification = false;
-                let htmlClassification =  '<option value="">--Select options--</option>';
-                data.classification.forEach(el => {
-                    htmlClassification += `<option value="${el.id}">${el.name}</option>`;
-                    checkClassification = true;
-                });
-
-                $('#pImage').attr('src',hostUrl+data.product_thumbnail)
-                $('#pName').text(data.product_name);
-                $('#pCode').text(data.product_code);
-                $('#price').text(price.toLocaleString() + ' ₫');
-                $('#pCategory').text(data.sub_sub_category.subsubcategory_name);
-                $('#pBrand').text(data.brand.brand_name);
-                if(checkClassification){
-                    $('#optionClassification').show();
-                    $('#classificationProductModal').html(htmlClassification);
-                }else{
-                    $('#classificationProductModal').html('');
-                    $('#optionClassification').hide();
-                }
-
-            }
-        });
-    }
-
-    $('#classificationProductModal').on('change',function (e){
-        let id = $('#classificationProductModal').val();
-        $.ajax({
-            url: '{{ url('ajax/classification') }}'+'/'+id,
-            type: "GET",
-            success: function (data){
-                data = JSON.parse(data)
-                $('#pStock').html(data['quantity']);
-            }
-        });
-    });
 </script>
 @yield('script')
 </body>

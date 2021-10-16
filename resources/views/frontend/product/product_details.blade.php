@@ -147,11 +147,12 @@
                                                     <label class="info-title control-label">Choose <span>*</span></label>
                                                     <select id="classificationSelect"
                                                         class="form-control">
-                                                        <option value="">--Select options--</option>
+                                                        <option value="" hidden>--Select options--</option>
                                                         @foreach ($classifications as $item)
                                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                                                         @endforeach
                                                     </select>
+                                                    <small id="errorClassification" class="text-danger"></small>
                                                     @endif
                                                 </div>
                                             </div>
@@ -171,33 +172,18 @@
                                     <div class="quantity-container info-container">
                                         <div class="row">
                                             <div class="col-sm-2">
-                                                <span class="label">Qty :</span>
+                                                <label for="productQuantity" style="margin-top: 15%;">Quantity:</label>
                                             </div>
-
-                                            <div class="col-sm-2">
-                                                <div class="cart-quantity">
-                                                    <div class="quant-input">
-                                                        <div class="arrows">
-                                                            <div class="arrow plus gradient"><span
-                                                                    class="ir"><i
-                                                                        class="icon fa fa-sort-asc"></i></span>
-                                                            </div>
-                                                            <div class="arrow minus gradient"><span
-                                                                    class="ir"><i
-                                                                        class="icon fa fa-sort-desc"></i></span>
-                                                            </div>
-                                                        </div>
-                                                        <input type="text" value="1">
-                                                    </div>
-                                                </div>
+                                            <div class="col-sm-3">
+                                                <input id="productQuantity" type="number" class="form-control" value="1" min="0" style="padding: 0px 5px;">
                                             </div>
 
                                             <div class="col-sm-7">
-                                                <a href="#" class="btn btn-primary"><i
-                                                        class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART</a>
+                                                <button onclick="addToCartProduct({{ $product->id }})"class="btn btn-primary"><i class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART</button>
                                             </div>
 
                                         </div><!-- /.row -->
+                                        <small id="errorQuantity" class="text-danger"></small>
                                     </div><!-- /.quantity-container -->
 
 
@@ -466,6 +452,22 @@
 @endsection
 @section('script')
     <script type="text/javascript">
+        @if(count($classifications) > 0)
+            var hasClassification = true;
+        @else
+            var hasClassification = false;
+        @endif
+
+        var inStockPD = {{ $product->product_quantity }};
+        $('#productQuantity').on('input',function (){
+            let qty = parseInt($('#productQuantity').val());
+            if( qty > parseInt(inStockPD)){
+                $('#productQuantity').val(inStockPD);
+            }else if(qty < 0){
+                $('#productQuantity').val(0);
+            }
+        });
+
         $('#classificationSelect').on('change',function (e){
             let id = $('#classificationSelect').val();
             $.ajax({
@@ -473,9 +475,43 @@
                 type: "GET",
                 success: function (data){
                     data = JSON.parse(data)
-                    $('#quantityClassification').html(data['quantity']);
+                    $('#quantityClassification').html(data.quantity);
+                    inStockPD = data.quantity;
                 }
             });
         });
+
+        function addToCartProduct(id){
+            let quantity = $('#productQuantity').val();
+            if(quantity == ""){
+                $('#errorQuantity').text('Enter quantity');
+                return;
+            }else{
+                $('#errorQuantity').text('');
+            }
+            let data;
+            if(hasClassification){
+                let classification = $('#classificationSelect option:selected').val();
+                if(classification == ""){
+                    $('#errorClassification').text('Choose type');
+                    return;
+                }else{
+                    $('#errorClassification').text('');
+                }
+                data = { quantity: quantity, classification: classification }
+            }else{
+                data = { quantity: quantity}
+            }
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: data,
+                url: "/cart/store/" + id,
+                success: function (data){
+                    toastr.success(data.success);
+                }
+            });
+        }
     </script>
 @endsection

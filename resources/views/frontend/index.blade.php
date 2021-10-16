@@ -37,7 +37,6 @@
                                                             </a>
                                                         </div>
                                                         <!-- /.image -->
-
                                                     </div>
                                                     <!-- /.product-image -->
                                                 </div>
@@ -102,8 +101,7 @@
                                                                 </a>
                                                             </div>
                                                             <!-- /.image -->
-
-                                                    z    </div>
+                                                        </div>
                                                         <!-- /.product-image -->
                                                     </div>
                                                     <!-- /.col -->

@@ -5,6 +5,7 @@ use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\SubCategoryController;
+use App\Http\Controllers\Frontend\CartController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\AdminController;
@@ -33,6 +34,10 @@ Route::group(['prefix' => 'ajax'], function () {
     Route::get('classification/{id}/', [ProductController::class, 'getClassification'])->name('product.classification.ajax');
     Route::get('product/{id}/', [ProductController::class, 'getProduct'])->name('product.classification.ajax');
 });
+
+// Add to Cart Store Data
+Route::post('cart/store/{id}', [CartController::class, 'AddToCart']);
+
 
 // User Router
 Route::group(['prefix' => 'user'], function () {
