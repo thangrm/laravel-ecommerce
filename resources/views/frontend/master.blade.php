@@ -41,6 +41,7 @@
 <!-- ============================================== HEADER : END ============================================== -->
 
 @yield('content')
+@include('frontend.common.product_modal')
 
 <!-- ============================================================= FOOTER ============================================================= -->
 
@@ -61,9 +62,9 @@
 <script src="{{ asset('frontend/assets/js/jquery.easing-1.3.min.js') }}"></script>
 <script src="{{ asset('frontend/assets/js/bootstrap-slider.min.js') }}"></script>
 <script src="{{ asset('frontend/assets/js/jquery.rateit.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('frontend/assets/js/lightbox.min.js') }}"></script>
+<script src="{{ asset('frontend/assets/js/lightbox.min.js') }}"></script>
 <script src="{{ asset('frontend/assets/js/bootstrap-select.min.js') }}"></script>
-<script src="{{ asset('frontend/assets/js/wow.min.js') }}"></script>
+{{--<script src="{{ asset('frontend/assets/js/wow.min.js') }}"></script>--}}
 <script src="{{ asset('frontend/assets/js/scripts.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" type="text/javascript" ></script>
 <script>
@@ -87,6 +88,57 @@
             break;
     }
     @endif
+
+    function productView(id){
+        $.ajax({
+            url: '{{ url('ajax/product') }}'+'/'+id,
+            type: "GET",
+            success: function (data){
+                let hostUrl = '{{asset('')}}';
+                data = JSON.parse(data);
+                let price;
+                if(data.discount_price != null){
+                    price = data.discount_price;
+                }else{
+                    price = data.selling_price;
+                }
+
+                let checkClassification = false;
+                let htmlClassification =  '<option value="">--Select options--</option>';
+                data.classification.forEach(el => {
+                    htmlClassification += `<option value="${el.id}">${el.name}</option>`;
+                    checkClassification = true;
+                });
+
+                $('#pImage').attr('src',hostUrl+data.product_thumbnail)
+                $('#pName').text(data.product_name);
+                $('#pCode').text(data.product_code);
+                $('#price').text(price.toLocaleString() + ' ₫');
+                $('#pCategory').text(data.sub_sub_category.subsubcategory_name);
+                $('#pBrand').text(data.brand.brand_name);
+                if(checkClassification){
+                    $('#optionClassification').show();
+                    $('#classificationProductModal').html(htmlClassification);
+                }else{
+                    $('#classificationProductModal').html('');
+                    $('#optionClassification').hide();
+                }
+
+            }
+        });
+    }
+
+    $('#classificationProductModal').on('change',function (e){
+        let id = $('#classificationProductModal').val();
+        $.ajax({
+            url: '{{ url('ajax/classification') }}'+'/'+id,
+            type: "GET",
+            success: function (data){
+                data = JSON.parse(data)
+                $('#pStock').html(data['quantity']);
+            }
+        });
+    });
 </script>
 @yield('script')
 </body>

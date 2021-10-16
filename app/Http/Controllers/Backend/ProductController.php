@@ -17,6 +17,15 @@ use Image;
 
 class ProductController extends Controller
 {
+    public function getProduct($id)
+    {
+        $product = Product::findOrFail($id);
+        $product->brand;
+        $product->subSubCategory;
+        $product->classification;
+        return json_encode($product);
+    }
+
     public function addProduct()
     {
         $categories = Category::orderBy('category_name', 'ASC')->get();

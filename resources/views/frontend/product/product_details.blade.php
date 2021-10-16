@@ -68,7 +68,7 @@
                                                     <a class="horizontal-thumb active" data-target="#owl-single-product"
                                                         data-slide="1" href="#slide{{ $img->id }}">
                                                         <img class="img-responsive" width="85" alt=""
-                                                            src="{{ asset($img->photo_name) }}}"
+                                                            src="{{ asset($img->photo_name) }}"
                                                             data-echo="{{ asset($img->photo_name) }}" />
                                                     </a>
                                                 </div>
@@ -146,7 +146,7 @@
                                                     @if(count($classifications) > 0)
                                                     <label class="info-title control-label">Choose <span>*</span></label>
                                                     <select id="classificationSelect"
-                                                        class="form-control unicase-form-control selectpicker">
+                                                        class="form-control">
                                                         <option value="">--Select options--</option>
                                                         @foreach ($classifications as $item)
                                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -160,7 +160,7 @@
                                         <div class="row">
                                             <div class="col-sm-2">
                                                 <div class="stock-box">
-                                                    <span class="label">Availability :
+                                                    <span class="label">In stock :
                                                         <span id="quantityClassification">{{ $product->product_quantity }} </span>
                                                     </span>
                                                 </div>
@@ -415,7 +415,7 @@
                                             <div class="description"></div>
 
                                             <div class="product-price">
-                                                @if($product->discount_price != null)
+                                                @if($item->discount_price != null)
                                                     <div class="product-price"> <span class="price"> {{ number_format($item->discount_price) }} ₫ </span> <span class="price-before-discount">{{ number_format($item->selling_price) }} ₫</span> </div>
                                                 @else
                                                     <div class="product-price"> <span class="price"> {{ number_format($item->selling_price) }} ₫ </span></div>
@@ -428,14 +428,9 @@
                                             <div class="action">
                                                 <ul class="list-unstyled">
                                                     <li class="add-cart-button btn-group">
-                                                        <button class="btn btn-primary icon" data-toggle="dropdown"
-                                                            type="button">
+                                                        <button class="btn btn-primary icon" data-toggle="modal" data-target="#productModal" onclick="productView({{$item->id}})">
                                                             <i class="fa fa-shopping-cart"></i>
                                                         </button>
-                                                        <button class="btn btn-primary cart-btn" type="button">Add to
-                                                            cart
-                                                        </button>
-
                                                     </li>
 
                                                     <li class="lnk wishlist">
@@ -474,7 +469,7 @@
         $('#classificationSelect').on('change',function (e){
             let id = $('#classificationSelect').val();
             $.ajax({
-                url: '{{ url('product/ajax/classification') }}'+'/'+id,
+                url: '{{ url('ajax/classification') }}'+'/'+id,
                 type: "GET",
                 success: function (data){
                     data = JSON.parse(data)

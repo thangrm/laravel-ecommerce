@@ -28,6 +28,12 @@ Route::group(['prefix' => 'product'], function () {
     Route::get('/category/{id}/{slug}', [IndexController::class, 'CategoryWiseProduct'])->name('product.view.category');
 });
 
+// AJAX
+Route::group(['prefix' => 'ajax'], function () {
+    Route::get('classification/{id}/', [ProductController::class, 'getClassification'])->name('product.classification.ajax');
+    Route::get('product/{id}/', [ProductController::class, 'getProduct'])->name('product.classification.ajax');
+});
+
 // User Router
 Route::group(['prefix' => 'user'], function () {
     Route::middleware(['auth:sanctum,web', 'verified'])->group(function () {
@@ -121,7 +127,6 @@ Route::middleware(['auth:sanctum,admin', 'verified'])->group(function () {
         Route::get('/delete/{id}', [ProductController::class, 'deleteProduct'])->name('product.delete');
 
         Route::post('/classification/update/', [ProductController::class, 'updateClassification'])->name('product.classification.update');
-        Route::get('/ajax/classification/{id}/', [ProductController::class, 'getClassification'])->name('product.classification.ajax');
         Route::post('/image/store/', [ProductController::class, 'addImage'])->name('product.image.store');
         Route::get('/image/delete/{id}', [ProductController::class, 'deleteImage'])->name('product.image.delete');
     });
