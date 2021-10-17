@@ -59,11 +59,10 @@
     var inStockModal;
     $('#modalProductQuantity').on('input',function (){
         let qty = parseInt($('#modalProductQuantity').val());
-        console.log((qty));
         if( qty > parseInt(inStockModal)){
             $('#modalProductQuantity').val(inStockModal);
         }else if(qty < 0){
-            $('#modalProductQuantity').val(0);
+            $('#modalProductQuantity').val(1);
         }
     });
 
@@ -132,7 +131,11 @@
         if(quantity == ""){
             $('#modalErrorQuantity').text('Enter quantity');
             return;
-        }else{
+        }else if(parseInt(quantity) > parseInt(inStockModal)){
+            $('#modalErrorQuantity').text('Not enough in stock');
+            return;
+        }
+        else{
             $('#modalErrorQuantity').text('');
         }
         let data;
@@ -156,6 +159,7 @@
             url: "/cart/store/" + id,
             success: function (data){
                 toastr.success(data.success);
+                miniCart();
             }
         });
     }

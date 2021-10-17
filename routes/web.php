@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\CategoryController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\SubCategoryController;
 use App\Http\Controllers\Frontend\CartController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\IndexController;
 use App\Http\Controllers\AdminController;
@@ -32,11 +34,28 @@ Route::group(['prefix' => 'product'], function () {
 // AJAX
 Route::group(['prefix' => 'ajax'], function () {
     Route::get('classification/{id}/', [ProductController::class, 'getClassification'])->name('product.classification.ajax');
-    Route::get('product/{id}/', [ProductController::class, 'getProduct'])->name('product.classification.ajax');
+    Route::get('product/{id}/', [ProductController::class, 'getProduct'])->name('product.ajax');
+    Route::get('provinces', [AddressController::class, 'getProvinces'])->name('ajax.province');
+    Route::get('districts/{p_id}', [AddressController::class, 'getDistricts'])->name('ajax.district');
+    Route::get('wards/{d_id}', [AddressController::class, 'getWards'])->name('ajax.ward');
 });
 
-// Add to Cart Store Data
-Route::post('cart/store/{id}', [CartController::class, 'AddToCart']);
+// Cart
+Route::group(['prefix' => 'cart'], function () {
+    // Add to Cart Store Data
+    Route::get('/', [CartController::class, 'MyCart'])->name('myCart');
+    Route::post('store/{id}', [CartController::class, 'AddToCart']);
+    Route::get('product', [CartController::class, 'GetCartProduct'])->name('cart.product');
+    Route::get('remove/{id}', [CartController::class, 'RemoveCartProduct'])->name('cart.remove');
+    Route::post('update/quantity', [CartController::class, 'UpdateProductQuantity'])->name('cart.update.quantity');
+    Route::get('checkout', [CartController::class, 'Checkout'])->name('cart.checkout');
+});
+
+// Order
+Route::group(['prefix' => 'order'], function () {
+    Route::post('store', [OrderController::class, 'store'])->name('order.store');
+});
+
 
 
 // User Router

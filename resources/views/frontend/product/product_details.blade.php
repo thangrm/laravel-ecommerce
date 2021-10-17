@@ -464,7 +464,7 @@
             if( qty > parseInt(inStockPD)){
                 $('#productQuantity').val(inStockPD);
             }else if(qty < 0){
-                $('#productQuantity').val(0);
+                $('#productQuantity').val(1);
             }
         });
 
@@ -477,6 +477,7 @@
                     data = JSON.parse(data)
                     $('#quantityClassification').html(data.quantity);
                     inStockPD = data.quantity;
+                    $('#productQuantity').val(1);
                 }
             });
         });
@@ -486,7 +487,11 @@
             if(quantity == ""){
                 $('#errorQuantity').text('Enter quantity');
                 return;
-            }else{
+            }else if(parseInt(quantity) > parseInt(inStockPD)){
+                $('#errorQuantity').text('Not enough in stock');
+                return;
+            }
+            else{
                 $('#errorQuantity').text('');
             }
             let data;
@@ -510,6 +515,7 @@
                 url: "/cart/store/" + id,
                 success: function (data){
                     toastr.success(data.success);
+                    miniCart();
                 }
             });
         }

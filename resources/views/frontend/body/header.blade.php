@@ -6,10 +6,7 @@
             <div class="header-top-inner">
                 <div class="cnt-account">
                     <ul class="list-unstyled">
-                        <li><a href="#"><i class="icon fa fa-user"></i>My Account</a></li>
-                        <li><a href="#"><i class="icon fa fa-heart"></i>Wishlist</a></li>
-                        <li><a href="#"><i class="icon fa fa-shopping-cart"></i>My Cart</a></li>
-                        <li><a href="#"><i class="icon fa fa-check"></i>Checkout</a></li>
+                        <li><a href="{{ route('myCart') }}"><i class="icon fa fa-shopping-cart"></i>My Cart</a></li>
                         @auth
                             <li><a href="{{ route('user.profile') }}"><i class="icon fa fa-user"></i>User Profile</a></li>
                         @else
@@ -18,26 +15,6 @@
                     </ul>
                 </div>
                 <!-- /.cnt-account -->
-
-                <div class="cnt-block">
-                    <ul class="list-unstyled list-inline">
-                        <li class="dropdown dropdown-small"> <a href="#" class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown"><span class="value">USD </span><b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">USD</a></li>
-                                <li><a href="#">INR</a></li>
-                                <li><a href="#">GBP</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown dropdown-small"> <a href="#" class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown"><span class="value">English </span><b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">English</a></li>
-                                <li><a href="#">French</a></li>
-                                <li><a href="#">German</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <!-- /.list-unstyled -->
-                </div>
                 <!-- /.cnt-cart -->
                 <div class="clearfix"></div>
             </div>
@@ -64,13 +41,14 @@
                         <form>
                             <div class="control-group">
                                 <ul class="categories-filter animate-dropdown">
-                                    <li class="dropdown"> <a class="dropdown-toggle"  data-toggle="dropdown" href="category.html">Categories <b class="caret"></b></a>
+                                    <li class="dropdown"> <a class="dropdown-toggle"  data-toggle="dropdown">Categories <b class="caret"></b></a>
                                         <ul class="dropdown-menu" role="menu" >
-                                            <li class="menu-header">Computer</li>
-                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="category.html">- Clothing</a></li>
-                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="category.html">- Electronics</a></li>
-                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="category.html">- Shoes</a></li>
-                                            <li role="presentation"><a role="menuitem" tabindex="-1" href="category.html">- Watches</a></li>
+                                            @php
+                                                $categories = \App\Models\Category::orderBy('category_name','ASC')->get();
+                                            @endphp
+                                            @foreach($categories as $category)
+                                            <li role="presentation"><a role="menuitem" tabindex="-1">{{ $category->category_name }}</a></li>
+                                            @endforeach
                                         </ul>
                                     </li>
                                 </ul>
@@ -85,39 +63,14 @@
                 <div class="col-xs-12 col-sm-12 col-md-2 animate-dropdown top-cart-row">
                     <!-- ============================================================= SHOPPING CART DROPDOWN ============================================================= -->
 
-                    <div class="dropdown dropdown-cart"> <a href="#" class="dropdown-toggle lnk-cart" data-toggle="dropdown">
+                    <div class="dropdown dropdown-cart">
+                        <a href="{{ route('myCart') }}" class="lnk-cart">
                             <div class="items-cart-inner">
                                 <div class="basket"> <i class="glyphicon glyphicon-shopping-cart"></i> </div>
-                                <div class="basket-item-count"><span class="count">2</span></div>
-                                <div class="total-price-basket"> <span class="lbl">cart -</span> <span class="total-price"> <span class="sign">$</span><span class="value">600.00</span> </span> </div>
+                                <div class="basket-item-count"><span class="count" id="qtyMiniCart"></span></div>
+                                <div class="total-price-basket"><span class="total-price"> <span class="sign"></span><span class="value" id="totalMiniCart"></span> </span> </div>
                             </div>
                         </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <div class="cart-item product-summary">
-                                    <div class="row">
-                                        <div class="col-xs-4">
-                                            <div class="image"> <a href="#"><img src="{{ asset('frontend/assets/images/cart.jpg') }}" alt=""></a> </div>
-                                        </div>
-                                        <div class="col-xs-7">
-                                            <h3 class="name"><a href="#">Simple Product</a></h3>
-                                            <div class="price">$600.00</div>
-                                        </div>
-                                        <div class="col-xs-1 action"> <a href="#"><i class="fa fa-trash"></i></a> </div>
-                                    </div>
-                                </div>
-                                <!-- /.cart-item -->
-                                <div class="clearfix"></div>
-                                <hr>
-                                <div class="clearfix cart-total">
-                                    <div class="pull-right"> <span class="text">Sub Total :</span><span class='price'>$600.00</span> </div>
-                                    <div class="clearfix"></div>
-                                    <a href="checkout.html" class="btn btn-upper btn-primary btn-block m-t-20">Checkout</a> </div>
-                                <!-- /.cart-total-->
-
-                            </li>
-                        </ul>
-                        <!-- /.dropdown-menu-->
                     </div>
                     <!-- /.dropdown-cart -->
 
@@ -144,13 +97,10 @@
                     <div class="navbar-collapse collapse" id="mc-horizontal-menu-collapse">
                         <div class="nav-outer">
                             <ul class="nav navbar-nav">
-                                <li class="active dropdown yamm-fw"> <a href="home.html" data-hover="dropdown" class="dropdown-toggle" data-toggle="dropdown">Home</a> </li>
+                                <li class="active dropdown yamm-fw"> <a href="#" data-hover="dropdown" class="dropdown-toggle" data-toggle="dropdown">Home</a> </li>
 
-                                @php
-                                $categories = \App\Models\Category::orderBy('category_name','ASC')->get();
-                                @endphp
                                 @foreach($categories as $category)
-                                <li class="dropdown yamm mega-menu"> <a href="home.html" data-hover="dropdown" class="dropdown-toggle" data-toggle="dropdown">{{ $category->category_name }}</a>
+                                <li class="dropdown yamm mega-menu"> <a href="#" data-hover="dropdown" class="dropdown-toggle" data-toggle="dropdown">{{ $category->category_name }}</a>
                                     <ul class="dropdown-menu container">
                                         <li>
                                             <div class="yamm-content ">
@@ -207,3 +157,18 @@
     <!-- ============================================== NAVBAR : END ============================================== -->
 
 </header>
+<script>
+    function miniCart(){
+        $.ajax({
+            type: 'get',
+            dataType: 'json',
+            url: "/cart/product",
+            success: function (data) {
+                let qty = Object.keys(data.carts).length;
+                $('#qtyMiniCart').text(qty);
+                $('#totalMiniCart').text( data.cartTotal + ' ₫');
+            }
+        });
+    }
+    miniCart();
+</script>
