@@ -55,6 +55,12 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script type="text/javascript">
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     @if(Session::has('message'))
     let type = "{{ Session::get('alert-type','info') }}"
     switch(type){

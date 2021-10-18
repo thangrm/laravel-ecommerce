@@ -24,6 +24,11 @@ use App\Http\Controllers\Admin\AdminProfileController;
 |
 */
 
+/*
+|--------------------------------------------------------------------------
+| User Routes
+|--------------------------------------------------------------------------
+ */
 
 Route::get('/', [IndexController::class,'index'])->name('index');
 Route::group(['prefix' => 'product'], function () {
@@ -58,7 +63,7 @@ Route::group(['prefix' => 'order'], function () {
 
 
 
-// User Router
+// User Profile Router
 Route::group(['prefix' => 'user'], function () {
     Route::middleware(['auth:sanctum,web', 'verified'])->group(function () {
         Route::get('/logout', [IndexController::class, 'userLogout'])->name('user.logout');
@@ -77,9 +82,12 @@ Route::middleware(['auth:sanctum,web', 'verified'])->get('/dashboard', function 
 
 
 /*
- * Admin Router
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
  */
 
+// Admin Profile Router
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/login', [AdminController::class, 'loginform'])->name('admin.login');
     Route::post('/login', [AdminController::class, 'login'])->name('admin.login.post');
@@ -155,13 +163,25 @@ Route::middleware(['auth:sanctum,admin', 'verified'])->group(function () {
         Route::get('/image/delete/{id}', [ProductController::class, 'deleteImage'])->name('product.image.delete');
     });
 
-    // Admin Product Router
+    // Admin Slide Router
     Route::prefix('slide')->group(function () {
         Route::get('/add', [SliderController::class, 'viewSlide'])->name('slide.view');
         Route::post('/store', [SliderController::class, 'storeSlide'])->name('slide.store');
         Route::get('/active/{id}', [SliderController::class, 'activeSlide'])->name('slide.active');
         Route::get('/inactive/{id}', [SliderController::class, 'inactiveSlide'])->name('slide.inactive');
         Route::get('/delete/{id}', [SliderController::class, 'deleteSlide'])->name('slide.delete');
+    });
+
+    // Admin Order Router
+    Route::prefix('order')->group(function () {
+        Route::get('/pending', [OrderController::class, 'PendingOrders'])->name('order.pending');
+        Route::get('/confirmed', [OrderController::class, 'ConfirmedOrders'])->name('order.confirmed');
+        Route::get('/shipped', [OrderController::class, 'ShippedOrders'])->name('order.shipped');
+        Route::get('/delivered', [OrderController::class, 'DeliveredOrders'])->name('order.delivered');
+        Route::get('/cancel', [OrderController::class, 'CancelOrders'])->name('order.cancel');
+        Route::get('/detail/{id}', [OrderController::class, 'DetailOrder'])->name('order.detail');
+
+        Route::post('/status/', [OrderController::class, 'UpdateStatusOrder'])->name('order.status.update');
     });
 });
 

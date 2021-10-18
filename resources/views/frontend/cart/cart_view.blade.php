@@ -117,8 +117,8 @@
                                         <input onchange="changeQuantity('${value.rowId}', this)" type="number" class="form-control" min="0" max="${max}" value="${value.qty}">
                                         <small>Max: ${max}</small>
                                     </td>
-                                    <td class="cart-product-sub-total"><span class="cart-sub-total-price">${value.price.toLocaleString()} ₫</span></td>
-                                    <td class="cart-product-grand-total"><span class="cart-grand-total-price">${value.subtotal.toLocaleString()} ₫</span></td>
+                                    <td class="cart-product-sub-total"><span class="cart-sub-total-price">${value.price.toLocaleString('en-US')} ₫</span></td>
+                                    <td class="cart-product-grand-total"><span class="cart-grand-total-price">${value.subtotal.toLocaleString('en-US')} ₫</span></td>
                                 </tr>`;
                     });
                     $('#tableMyCart').html(row);

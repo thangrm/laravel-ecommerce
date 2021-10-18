@@ -67,6 +67,8 @@
     });
 
     function productView(id){
+        $('#modalErrorQuantity').text('');
+        $('#modalErrorClassification').text('');
         $.ajax({
             url: '{{ url('ajax/product') }}'+'/'+id,
             type: "GET",
@@ -90,7 +92,7 @@
                 $('#pImage').attr('src',hostUrl+data.product_thumbnail)
                 $('#pName').text(data.product_name);
                 $('#pCode').text(data.product_code);
-                $('#price').text(price.toLocaleString() + ' ₫');
+                $('#price').text(price.toLocaleString('en-US') + ' ₫');
                 $('#pCategory').text(data.sub_sub_category.subsubcategory_name);
                 $('#pBrand').text(data.brand.brand_name);
                 $('#modalProductId').val(id);
@@ -160,6 +162,7 @@
             success: function (data){
                 toastr.success(data.success);
                 miniCart();
+                $('#productModal').modal('hide');
             }
         });
     }

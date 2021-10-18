@@ -9,6 +9,7 @@
     <meta name="keywords" content="MediaCenter, Template, eCommerce">
     <meta name="robots" content="all">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <link rel="icon" href="{{ asset('backend/images/logo.png') }}">
     <title>@yield('title')</title>
 
     <!-- Bootstrap Core CSS -->

@@ -104,6 +104,44 @@ $nameRouter = Route::current()->getName();
                 </ul>
             </li>
 
+            <li class="treeview {{ ($prefix == '/order') ? 'active' : '' }}">
+                <a href="#">
+                    <i data-feather="file"></i>
+                    <span>Orders</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ ($nameRouter == 'order.pending') ? 'active' : '' }}">
+                        <a href="{{ route('order.pending') }}">
+                            <i class="ti-more"></i>Pending Orders
+                        </a>
+                    </li>
+                    <li class="{{ ($nameRouter == 'order.confirmed') ? 'active' : '' }}">
+                        <a href="{{ route('order.confirmed') }}">
+                            <i class="ti-more"></i>Confirmed Orders
+                        </a>
+                    </li>
+                    <li class="{{ ($nameRouter == 'order.shipped') ? 'active' : '' }}">
+                        <a href="{{ route('order.shipped') }}">
+                            <i class="ti-more"></i>Shipped Orders
+                        </a>
+                    </li>
+                    <li class="{{ ($nameRouter == 'order.delivered') ? 'active' : '' }}">
+                        <a href="{{ route('order.delivered') }}">
+                            <i class="ti-more"></i>Delivered Orders
+                        </a>
+                    </li>
+                    <li class="{{ ($nameRouter == 'order.cancel') ? 'active' : '' }}">
+                        <a href="{{ route('order.cancel') }}">
+                            <i class="ti-more"></i>Cancel Orders
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+
         </ul>
     </section>
 
