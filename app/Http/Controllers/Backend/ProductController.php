@@ -92,7 +92,7 @@ class ProductController extends Controller
         {
             foreach($request->file('product_image') as $img)
             {
-                $name_gen = $img->getClientOriginalName().hexdec(uniqid()).'.'.$img->getClientOriginalExtension();
+                $name_gen = hexdec(uniqid()).$image->getClientOriginalName();
                 Image::make($img)->resize(450,450)->save('upload/products/'.$name_gen);
                 $urlMulti = 'upload/products/'.$name_gen;
                 ProductImg::create([
@@ -161,7 +161,7 @@ class ProductController extends Controller
 
         if($request->hasFile('product_thumbnail')){
             $image = $request->file('product_thumbnail');
-            $name_gen = $image->getClientOriginalName().hexdec(uniqid()).'.'.$image->getClientOriginalExtension();
+            $name_gen = hexdec(uniqid()).$image->getClientOriginalName();
             Image::make($image)->resize(450,450)->save('upload/products/'.$name_gen);
             $save_url = 'upload/products/'.$name_gen;
             $product->product_thumbnail = $save_url;
@@ -294,7 +294,7 @@ class ProductController extends Controller
         {
             $product_id = $request->product_id;
             $img = $request->file('product_image');
-            $name_gen = $img->getClientOriginalName().hexdec(uniqid()).'.'.$img->getClientOriginalExtension();
+            $name_gen = hexdec(uniqid()).$img->getClientOriginalName();
             Image::make($img)->resize(450,450)->save('upload/products/'.$name_gen);
             $urlMulti = 'upload/products/'.$name_gen;
             $productImage = ProductImg::create([

@@ -22,7 +22,7 @@ class SliderController extends Controller
         if($request->hasFile('slide_image'))
         {
             $img = $request->file('slide_image');
-            $name_gen = $img->getClientOriginalName().hexdec(uniqid()).'.'.$img->getClientOriginalExtension();
+            $name_gen = hexdec(uniqid()).$img->getClientOriginalName();
             Image::make($img)->resize(850,350)->save('upload/sliders/'.$name_gen);
             $saveUrl = 'upload/sliders/'.$name_gen;
 
