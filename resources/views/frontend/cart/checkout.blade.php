@@ -17,16 +17,15 @@
         <div class="container">
             <div class="checkout-box ">
                 <div class="row">
+                    <form action="{{ route('order.store') }}" method="post">
                     <div class="col-md-8">
                         <div class="panel-group checkout-steps" id="accordion">
                             <!-- checkout -->
-                            <div class="panel panel-default checkout-step-01">
-                                <div id="collapseOne" class="panel-collapse collapse in">
-
-                                    <!-- panel-body  -->
-                                    <div class="panel-body">
-                                        <form action="{{ route('order.store') }}" method="post">
-                                            @csrf
+                                @csrf
+                                <div class="panel panel-default checkout-step-01">
+                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                        <!-- panel-body  -->
+                                        <div class="panel-body">
                                             <!-- shipping address -->
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-6">
@@ -81,20 +80,15 @@
                                                         <label for="address">Address <span class="text-danger">*</span></label>
                                                         <input type="text" id="address" name="address" class="form-control" required>
                                                     </div>
+
                                                 </div>
                                             </div><!-- shipping address: end -->
-                                            <div class="row" style="margin: 10px">
-                                                <div class="text-center">
-                                                    <button type="submit" class="btn btn-primary">Order</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <!-- panel-body  -->
+                                        </div>
+                                        <!-- panel-body  -->
 
-                                </div><!-- row -->
-                            </div>
-                            <!-- checkout -->
+                                    </div><!-- row -->
+                                </div>
+                                <!-- checkout -->
 
                         </div><!-- /.checkout-steps -->
                     </div>
@@ -116,7 +110,39 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- checkout-progress-sidebar -->				</div>
+                        <!-- checkout-progress-sidebar -->
+
+                        <!-- payment-type-sidebar -->
+                        <div class="checkout-progress-sidebar ">
+                            <div class="panel-group">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="unicase-checkout-title">Select Payment Type</h4>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <lable for="paymentCash">Cash</lable>
+                                            <input type="radio" id="paymentCash" value="1" name="payment_type" required>
+                                            <img src="{{ asset('frontend/assets/images/cash.png') }}" style="width: 50px; height: 50px;">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <lable for="paymentMomo">Momo</lable>
+                                            <input type="radio" id="paymentMomo" value="2" name="payment_type" required>
+                                            <img src="{{ asset('frontend/assets/images/momo.png') }}" style="width: 50px; height: 50px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- payment-type-sidebar -->
+
+                        <div class="row" style="margin: 0px">
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary" style="width: 100%;">Order</button>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
                 </div><!-- /.row -->
             </div><!-- /.checkout-box -->
             <!-- ============================================== BRANDS CAROUSEL ============================================== -->

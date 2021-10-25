@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\ProductClassification;
+use App\Providers\MomoServiceProvider;
 use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\DB;
 class OrderController extends Controller
 {
     public function store(Request $request){
+        $CASH = 1;
+        $MOMO = "2";
         $request->validate([
                 'shippingName' => 'required',
                 'email' => 'required',
@@ -22,6 +25,7 @@ class OrderController extends Controller
                 'selectDistrict' => 'required',
                 'selectWard' => 'required',
                 'address' => 'required',
+                'payment_type' => 'required',
         ]);
 
         $order = Order::create([
@@ -34,6 +38,7 @@ class OrderController extends Controller
            'ward_id' => $request->selectWard,
            'address' => $request->address,
            'note' => $request->note,
+           'payment_type' => $request->payment_type,
         ]);
 
         $carts = Cart::content();
@@ -67,7 +72,23 @@ class OrderController extends Controller
                 'message'    => 'Order Successfully',
                 'alert-type' => 'success',
         );
-        return redirect()->route('index')->with($notification);
+        if($request->payment_type == $MOMO){
+            $order = 'MM'.time();
+            $response = MomoServiceProvider::purchase([
+                    'ipnUrl' => 'http://localhost:8000/',
+                    'redirectUrl' => 'http://localhost:8000/',
+                    'orderId' => $order,
+                    'amount' => '15000',
+                    'orderInfo' => 'RM purchase',
+                    'requestId' => $order,
+                    'extraData' => '',
+            ]);
+
+            return redirect($response->json('payUrl'));
+        }
+        else if($request->payment_type == $CASH){
+            return redirect()->route('index')->with($notification);
+        }
     }
 
     public function PendingOrders(){
