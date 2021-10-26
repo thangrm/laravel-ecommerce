@@ -27,21 +27,21 @@ class OrderController extends Controller
                 'address' => 'required',
                 'payment_type' => 'required',
         ]);
-
         $order = Order::create([
-            'user_id' => Auth::id(),
-           'name' => $request->shippingName,
-           'email' => $request->email,
-           'phone' => $request->phone,
-           'province_id' => $request->selectProvince,
-           'district_id' => $request->selectDistrict,
-           'ward_id' => $request->selectWard,
-           'address' => $request->address,
-           'note' => $request->note,
-           'payment_type' => $request->payment_type,
+                'user_id' => Auth::id(),
+                'name' => $request->shippingName,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'province_id' => $request->selectProvince,
+                'district_id' => $request->selectDistrict,
+                'ward_id' => $request->selectWard,
+                'address' => $request->address,
+                'note' => $request->note,
+                'payment_type' => $request->payment_type,
         ]);
 
         $carts = Cart::content();
+        $total = Cart::total(0,'','');
         foreach ($carts as $cart){
             $classification_id = null;
 
@@ -58,36 +58,80 @@ class OrderController extends Controller
             $product->save();
 
             OrderDetail::create([
-                'order_id' => $order->id,
-                'product_id' => $cart->id,
-                'quantity' => $cart->qty,
-                'price' => $cart->price,
-                'classification_id' => $classification_id,
+                    'order_id' => $order->id,
+                    'product_id' => $cart->id,
+                    'quantity' => $cart->qty,
+                    'price' => $cart->price,
+                    'classification_id' => $classification_id,
             ]);
-
 
         }
         Cart::destroy();
-        $notification = array(
-                'message'    => 'Order Successfully',
-                'alert-type' => 'success',
-        );
+
         if($request->payment_type == $MOMO){
-            $order = 'MM'.time();
+            $orderIDMomo = 'MM'.time();
+            $order->invoice_no = $orderIDMomo;
+            $order->status = 0;
+            $order->save();
             $response = MomoServiceProvider::purchase([
-                    'ipnUrl' => 'http://localhost:8000/',
-                    'redirectUrl' => 'http://localhost:8000/',
-                    'orderId' => $order,
-                    'amount' => '15000',
+                    'ipnUrl' => route('order.momo.confirm'),
+                    'redirectUrl' => route('order.momo.redirect'),
+                    'orderId' => $orderIDMomo,
+                    'amount' => $total,
                     'orderInfo' => 'RM purchase',
-                    'requestId' => $order,
+                    'requestId' => $orderIDMomo,
                     'extraData' => '',
             ]);
-
-            return redirect($response->json('payUrl'));
+            if($response->successful()){
+                return redirect($response->json('payUrl'));
+            }else{
+                $notification = array(
+                        'message'    => 'Please try again later or choose another payment method',
+                        'alert-type' => 'info',
+                );
+                return redirect()->back()->with($notification);
+            }
         }
         else if($request->payment_type == $CASH){
+            $notification = array(
+                    'message'    => 'Order Successfully',
+                    'alert-type' => 'success',
+            );
             return redirect()->route('index')->with($notification);
+        }
+    }
+
+    public function redirectMomo(Request $request){
+        $checkPayment = MomoServiceProvider::completePurchase($request);
+        $notification = array(
+                'message'    => $checkPayment['message'],
+                'alert-type' => 'error',
+        );
+        if($checkPayment['success']) {
+            $order = Order::where('invoice_no', $request->orderId)->first();
+            if($order != null){
+                $order->paid = true;
+                $order->status = 1;
+                $order->transaction_id = $request->transId;
+                $order->save();
+                $notification = array(
+                        'message'    => 'Order Successfully',
+                        'alert-type' => 'success',
+                );
+            }else{
+                $notification['message'] = 'Invalid invoice code';
+            }
+        }
+        return redirect()->route('index')->with($notification);
+    }
+
+    public function confirmMomo(Request $request){
+        $order = Order::where('invoice_no', $request->orderId)->first();
+        if($order != null){
+            $order->paid = true;
+            $order->status = 1;
+            $order->transaction_id = $request->transId;
+            $order->save();
         }
     }
 

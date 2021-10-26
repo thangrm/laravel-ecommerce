@@ -27,6 +27,9 @@ class CreateOrdersTable extends Migration
             $table->string('address');
             $table->integer('status')->default(1);
             $table->integer('payment_type')->default(1);
+            $table->string('transaction_id')->nullable();
+            $table->string('invoice_no')->nullable();
+            $table->boolean('paid')->default(0);
             $table->timestamps();
         });
     }

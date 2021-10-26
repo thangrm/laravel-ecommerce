@@ -59,6 +59,8 @@ Route::group(['prefix' => 'cart'], function () {
 // Order
 Route::group(['prefix' => 'order'], function () {
     Route::post('store', [OrderController::class, 'store'])->name('order.store');
+    Route::get('momo', [OrderController::class, 'redirectMomo'])->name('order.momo.redirect');
+    Route::post('momo', [OrderController::class, 'confirmMomo'])->name('order.momo.confirm');
 });
 
 

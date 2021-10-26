@@ -110,11 +110,8 @@
                                                             class="price">{{ number_format($product->selling_price) }}
                                                             ₫</span>
                                                     @else
-                                                        <span
-                                                            class="price">{{ number_format($product->selling_price) }}
-                                                            ₫</span>
-                                                        <span class="price-strike">
-                                                            {{ number_format($product->discount_price) }} ₫ </span>
+                                                        <span class="price">{{ number_format($product->discount_price) }} ₫</span>
+                                                        <span class="price-strike">{{ number_format($product->selling_price) }} ₫ </span>
                                                     @endif
                                                 </div>
                                             </div>
