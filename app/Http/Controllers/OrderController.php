@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\ProductClassification;
+use App\Models\User;
 use App\Providers\MomoServiceProvider;
 use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
@@ -14,6 +15,21 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
+    public function myOrders(){
+        $id = Auth::user()->id;
+        $totalOrders = DB::table('orders')
+                ->selectRaw('orders.id as id, sum(price*quantity) as total')
+                ->join('order_details','orders.id','=','order_details.order_id')
+                ->groupBy('orders.id');
+
+        $orders = DB::table('orders')->joinSub($totalOrders, 'total_orders', function($join){
+            $join->on('orders.id','=','total_orders.id');
+        })->orderBy('orders.id','desc')->get();
+
+        $user = User::find($id);
+        return view('frontend.order.view', compact(['orders','user']));
+    }
+
     public function store(Request $request){
         $CASH = 1;
         $MOMO = "2";

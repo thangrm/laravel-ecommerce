@@ -6,6 +6,7 @@
             <div class="header-top-inner">
                 <div class="cnt-account">
                     <ul class="list-unstyled">
+                        <li><a href="{{ route('order.list') }}"><i class="icon fa fa-clipboard"></i>My orders</a></li>
                         <li><a href="{{ route('myCart') }}"><i class="icon fa fa-shopping-cart"></i>My Cart</a></li>
                         @auth
                             <li><a href="{{ route('user.profile') }}"><i class="icon fa fa-user"></i>User Profile</a></li>
