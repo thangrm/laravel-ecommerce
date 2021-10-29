@@ -23,7 +23,7 @@
                 <div class="col-md-6 col-12">
                     <div class="box box-bordered border-primary">
                         <div class="box-header with-border">
-                            <h4 class="box-title"><strong>Shipping Detail</strong> box</h4>
+                            <h4 class="box-title"><strong>Shipping Detail</strong></h4>
                         </div>
                         <table class="table">
                             <tr>
@@ -74,25 +74,24 @@
                         </div>
                         <table class="table">
                             <tr>
-                                <th>Order ID: </th>
-                                <th><span class="text-danger">{{ sprintf('RM%06d',$order->id) }} </span></th>
-                            </tr>
-                            <tr>
-                                <th>Name: </th>
-                                <th> {{ $order->user->name }} </th>
-                            </tr>
-                            <tr>
                                 <th>Note:</th>
                                 <th> {{ $order->note }} </th>
                             </tr>
-                            <tr>
-                                <th>Payment type: </th>
-                                <th>
-                                    @if($order->payment_type == 1)
-                                    Cash
-                                    @endif
-                                </th>
-                            </tr>
+                            @if($order->payment_type == 1)
+                                <tr>
+                                    <th>Payment type: </th>
+                                    <th>Cash</th>
+                                </tr>
+                            @elseif($order->payment_type == 2)
+                                <tr>
+                                    <th>Payment type: </th>
+                                    <th>Momo</th>
+                                </tr>
+                                <tr>
+                                    <th>Invoice ID: </th>
+                                    <th><span style="color: red">{{ $order->invoice_no }} </span></th>
+                                </tr>
+                            @endif
                             <tr>
                                 <th>Order Total: </th>
                                 <th> {{ number_format($grandTotal) }} ₫ </th>

@@ -15,21 +15,6 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    public function myOrders(){
-        $id = Auth::user()->id;
-        $totalOrders = DB::table('orders')
-                ->selectRaw('orders.id as id, sum(price*quantity) as total')
-                ->join('order_details','orders.id','=','order_details.order_id')
-                ->groupBy('orders.id');
-
-        $orders = DB::table('orders')->joinSub($totalOrders, 'total_orders', function($join){
-            $join->on('orders.id','=','total_orders.id');
-        })->orderBy('orders.id','desc')->get();
-
-        $user = User::find($id);
-        return view('frontend.order.view', compact(['orders','user']));
-    }
-
     public function store(Request $request){
         $CASH = 1;
         $MOMO = "2";
@@ -186,6 +171,36 @@ class OrderController extends Controller
             $grandTotal += $item->price * $item->quantity;
         }
         return view('admin.order.detail',compact(['order','province','district','ward','grandTotal']));
+    }
+
+    public function MyOrders(){
+        $id = Auth::user()->id;
+        $totalOrders = DB::table('orders')
+                ->selectRaw('orders.id as id, sum(price*quantity) as total')
+                ->join('order_details','orders.id','=','order_details.order_id')
+                ->groupBy('orders.id');
+
+        $orders = DB::table('orders')->joinSub($totalOrders, 'total_orders', function($join){
+            $join->on('orders.id','=','total_orders.id');
+        })->orderBy('orders.id','desc')->get();
+
+        $user = User::find($id);
+        return view('frontend.order.view', compact(['orders','user']));
+    }
+
+    public function UserOrderDetail($orderId){
+        $order = Order::findOrFail($orderId);
+        $province = DB::table('provinces')->where('id',$order->province_id)->first();
+        $district = DB::table('districts')->where('id',$order->district_id)->first();
+        $ward = DB::table('wards')->where('id',$order->ward_id)->first();
+        $grandTotal = 0;
+        foreach ($order->detail as $item){
+            $grandTotal += $item->price * $item->quantity;
+        }
+        $user = User::find(Auth::user()->id);
+
+        return view('frontend.order.detail',
+                compact(['order','province','district','ward','grandTotal','user']));
     }
 
     public function UpdateStatusOrder(Request $request){

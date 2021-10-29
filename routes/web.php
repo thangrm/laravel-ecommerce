@@ -59,7 +59,8 @@ Route::group(['prefix' => 'cart'], function () {
 // Order
 Route::group(['prefix' => 'order'], function () {
     Route::middleware(['auth:sanctum,web', 'verified'])->group(function(){
-        Route::get('list',[OrderController::class,'myOrders'])->name('order.list');
+        Route::get('list',[OrderController::class,'MyOrders'])->name('order.list');
+        Route::get('/user-detail/{id}',[OrderController::class,'UserOrderDetail'])->name('order.user_detail');
         Route::post('store', [OrderController::class, 'store'])->name('order.store');
     });
 

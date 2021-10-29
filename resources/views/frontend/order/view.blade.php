@@ -17,7 +17,7 @@
                                 <th class="text-center">Payment</th>
                                 <th class="text-center">Total</th>
                                 <th class="text-center">Status</th>
-                                <th class="text-center" style="width: 150px;">Action</th>
+                                <th class="text-center" style="width: 230px;">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -49,12 +49,18 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('order.detail',$item->id) }}" class="btn btn-info" title="View Order">
-                                            <i class="fa fa-eye"></i>
+                                        <a href="{{ route('order.user_detail',$item->id) }}" class="btn btn-info" title="View Order">
+                                            <i class="fa fa-eye"></i> View
                                         </a>
-                                        <a href="{{ route('order.detail',$item->id) }}" class="btn btn-danger" title="Invoince">
-                                            <i class="fa fa-download"></i>
-                                        </a>
+                                        @if($item->status == 0)
+                                            <a href="#" class="btn btn-primary" title="Invoince">
+                                                Payment
+                                            </a>
+                                        @else
+                                            <a href="#" class="btn btn-danger" title="Invoince">
+                                                <i class="fa fa-download"></i> Invoice
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

@@ -33,7 +33,7 @@
                                                     <tr role="row" class="odd">
                                                         <td>{{ $item->created_at }}</td>
                                                         <td>{{ sprintf('RM%06d',$item->id) }}</td>
-                                                        <td>{{ $item->user->name }}</td>
+                                                        <td>{{ $item->name }}</td>
                                                         <td>
                                                             @if($item->status == 1)
                                                                 <span class="badge badge-pill badge-primary">pending</span>
