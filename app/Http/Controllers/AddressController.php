@@ -13,9 +13,9 @@ class AddressController extends Controller
     }
 
     public function getDistricts($provinceId){
-        $district = DB::table('districts')->orderBy('name')
+        $districts = DB::table('districts')->orderBy('name')
                 ->where('province_id',$provinceId)->get();
-        return response()->json($district);
+        return response()->json($districts);
     }
 
     public function getWards($districtId){

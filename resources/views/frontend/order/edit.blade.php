@@ -17,11 +17,12 @@
         <div class="container">
             <div class="checkout-box ">
                 <div class="row">
-                    <form action="{{ route('order.store') }}" method="post">
+                    <form action="{{ route('order.update') }}" method="post">
+                    <input type="hidden" name="id" value="{{ $order->id }}">
                     <div class="col-md-8">
                         <div class="panel-group checkout-steps" id="accordion">
                             <!-- checkout -->
-                                @csrf
+                                 @csrf
                                 <div class="panel panel-default checkout-step-01">
                                     <div id="collapseOne" class="panel-collapse collapse in">
                                         <!-- panel-body  -->
@@ -32,20 +33,20 @@
                                                     <h3 class="checkout-subtitle"><b>Order Information</b></h3>
                                                     <div class="form-group">
                                                         <label for="shippingName" class="text-secondary" >Shipping Name <span class="text-danger">*</span></label>
-                                                        <input id="shippingName" name="shippingName"  type="text" class="form-control" required>
+                                                        <input id="shippingName" name="shippingName"  type="text" class="form-control" value="{{ $order->name }}" required>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="email">Email <span class="text-danger">*</span></label>
-                                                        <input id="email" name="email" type="text" class="form-control" required>
+                                                        <input id="email" name="email" type="text" class="form-control" value="{{ $order->email }}" required>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="phone">Phone <span class="text-danger">*</span></label>
-                                                        <input id="phone" name="phone" type="text" class="form-control" required>
+                                                        <input id="phone" name="phone" type="text" class="form-control" value="{{ $order->phone }}" required>
                                                     </div>
 
                                                     <div class="form-group">
                                                         <label  for="note">Note</label>
-                                                        <textarea id="note" name="note" class="form-control" rows="5" cols="50"></textarea>
+                                                        <textarea id="note" name="note" class="form-control" rows="5" cols="50">{{ $order->note }}</textarea>
                                                     </div>
                                                 </div>
 
@@ -57,7 +58,9 @@
                                                         <select id="selectProvince" name="selectProvince" class="form-control" required>
                                                             <option value="" hidden>-- Choose Province --</option>
                                                             @foreach($provinces as $province)
-                                                                <option value="{{ $province->id }}">{{ $province->name }}</option>
+                                                                <option value="{{ $province->id }}" @if($province->id == $order->province_id) selected @endif>
+                                                                    {{ $province->name }}
+                                                                </option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -66,6 +69,11 @@
                                                         <label for="selectDistrict">District <span class="text-danger">*</span></label>
                                                         <select id="selectDistrict" name="selectDistrict" class="form-control" required>
                                                             <option value="" hidden>-- Choose District --</option>
+                                                            @foreach($districts as $district)
+                                                                <option value="{{ $district->id }}" @if($district->id == $order->district_id) selected @endif>
+                                                                    {{ $district->name }}
+                                                                </option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
 
@@ -73,12 +81,17 @@
                                                         <label for="selectWard">Ward <span class="text-danger">*</span></label>
                                                         <select id="selectWard" name="selectWard" class="form-control" required>
                                                             <option value="" hidden>-- Choose Ward --</option>
+                                                            @foreach($wards as $ward)
+                                                                <option value="{{ $ward->id }}" @if($ward->id == $order->ward_id) selected @endif>
+                                                                    {{ $ward->name }}
+                                                                </option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
 
                                                     <div class="form-group">
                                                         <label for="address">Address <span class="text-danger">*</span></label>
-                                                        <input type="text" id="address" name="address" class="form-control" required>
+                                                        <input type="text" id="address" name="address" class="form-control" required value="{{ $order->address }}">
                                                     </div>
 
                                                 </div>
@@ -102,9 +115,9 @@
                                     </div>
                                     <div class="">
                                         <ul class="nav nav-checkout-progress list-unstyled">
-                                            <li class="list-group-item"><b>Subtotal: </b>{{ $cartTotal }} ₫</li>
+                                            <li class="list-group-item"><b>Subtotal: </b>{{ $grandTotal }} ₫</li>
                                             <li class="list-group-item"><b>Coupon Discount: </b>0 ₫</li>
-                                            <li class="list-group-item"><b>Grand total: </b>{{ $cartTotal }} ₫</li>
+                                            <li class="list-group-item"><b>Grand total: </b>{{ $grandTotal }} ₫</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -122,12 +135,12 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <lable for="paymentCash">Cash</lable>
-                                            <input type="radio" id="paymentCash" value="1" name="payment_type" required>
+                                            <input type="radio" id="paymentCash" value="1" name="payment_type" required @if($order->payment_type == 1) checked @endif>
                                             <img src="{{ asset('frontend/assets/images/cash.png') }}" style="width: 50px; height: 50px;">
                                         </div>
                                         <div class="col-md-6">
                                             <lable for="paymentMomo">Momo</lable>
-                                            <input type="radio" id="paymentMomo" value="2" name="payment_type" required>
+                                            <input type="radio" id="paymentMomo" value="2" name="payment_type" required @if($order->payment_type == 2) checked @endif>
                                             <img src="{{ asset('frontend/assets/images/momo.png') }}" style="width: 50px; height: 50px;">
                                         </div>
                                     </div>

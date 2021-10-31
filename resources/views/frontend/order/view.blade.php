@@ -53,7 +53,7 @@
                                             <i class="fa fa-eye"></i> View
                                         </a>
                                         @if($item->status == 0)
-                                            <a href="#" class="btn btn-primary" title="Invoince">
+                                            <a href="{{ route('order.edit',$item->id) }}" class="btn btn-primary" title="Invoince">
                                                 Payment
                                             </a>
                                         @else

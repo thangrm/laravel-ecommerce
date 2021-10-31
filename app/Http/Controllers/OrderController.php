@@ -17,7 +17,7 @@ class OrderController extends Controller
 {
     public function store(Request $request){
         $CASH = 1;
-        $MOMO = "2";
+        $MOMO = 2;
         $request->validate([
                 'shippingName' => 'required',
                 'email' => 'required',
@@ -102,63 +102,85 @@ class OrderController extends Controller
         }
     }
 
-    public function redirectMomo(Request $request){
-        $checkPayment = MomoServiceProvider::completePurchase($request);
-        $notification = array(
-                'message'    => $checkPayment['message'],
-                'alert-type' => 'error',
-        );
-        if($checkPayment['success']) {
-            $order = Order::where('invoice_no', $request->orderId)->first();
-            if($order != null){
-                $order->paid = true;
-                $order->status = 1;
-                $order->transaction_id = $request->transId;
-                $order->save();
-                $notification = array(
-                        'message'    => 'Order Successfully',
-                        'alert-type' => 'success',
-                );
+    public function update(Request $request){
+        $CASH = 1;
+        $MOMO = 2;
+        $request->validate([
+                'id' => 'required',
+                'shippingName' => 'required',
+                'email' => 'required',
+                'phone' => 'required',
+                'selectProvince' => 'required',
+                'selectDistrict' => 'required',
+                'selectWard' => 'required',
+                'address' => 'required',
+                'payment_type' => 'required',
+        ]);
+        $order = Order::findOrFail($request->id);
+        $order->name = $request->shippingName;
+        $order->email = $request->email;
+        $order->phone = $request->phone;
+        $order->province_id = $request->selectProvince;
+        $order->district_id = $request->selectDistrict;
+        $order->ward_id = $request->selectWard;
+        $order->address = $request->address;
+        $order->note = $request->note;
+        $order->payment_type = $request->payment_type;
+        $order->save();
+
+        if($request->payment_type == $MOMO){
+            $orderIDMomo = 'MM'.time();
+            $order->invoice_no = $orderIDMomo;
+            $order->status = 0;
+            $order->save();
+            $grandTotal = 0;
+            foreach ($order->detail as $item){
+                $grandTotal += $item->price * $item->quantity;
+            }
+
+            $response = MomoServiceProvider::purchase([
+                    'ipnUrl' => route('order.momo.confirm'),
+                    'redirectUrl' => route('order.momo.redirect'),
+                    'orderId' => $orderIDMomo,
+                    'amount' => strval($grandTotal),
+                    'orderInfo' => 'RM purchase',
+                    'requestId' => $orderIDMomo,
+                    'extraData' => '',
+            ]);
+            if($response->successful()){
+                return redirect($response->json('payUrl'));
             }else{
-                $notification['message'] = 'Invalid invoice code';
+                $notification = array(
+                        'message'    => 'Please try again later or choose another payment method',
+                        'alert-type' => 'info',
+                );
+                return redirect()->back()->with($notification);
             }
         }
-        return redirect()->route('index')->with($notification);
-    }
-
-    public function confirmMomo(Request $request){
-        $order = Order::where('invoice_no', $request->orderId)->first();
-        if($order != null){
-            $order->paid = true;
+        else if($request->payment_type == $CASH){
             $order->status = 1;
-            $order->transaction_id = $request->transId;
             $order->save();
+            $notification = array(
+                    'message'    => 'Order Successfully',
+                    'alert-type' => 'success',
+            );
+            return redirect()->route('index')->with($notification);
         }
     }
 
-    public function PendingOrders(){
-        $orders = Order::where('status',1)->orderBy('id','DESC')->get();
-        return view('admin.order.view',compact(['orders']));
-    }
-
-    public function ConfirmedOrders(){
-        $orders = Order::where('status',2)->orderBy('id','DESC')->get();
-        return view('admin.order.view',compact(['orders']));
-    }
-
-    public function ShippedOrders(){
-        $orders = Order::where('status',3)->orderBy('id','DESC')->get();
-        return view('admin.order.view',compact(['orders']));
-    }
-
-    public function DeliveredOrders(){
-        $orders = Order::where('status',4)->orderBy('id','DESC')->get();
-        return view('admin.order.view',compact(['orders']));
-    }
-
-    public function CancelOrders(){
-        $orders = Order::where('status',5)->orderBy('id','DESC')->get();
-        return view('admin.order.view',compact(['orders']));
+    public function edit($orderId){
+        $order = Order::findOrFail($orderId);
+        $provinces = DB::table('provinces')->orderBy('name')->get();
+        $districts = DB::table('districts')->orderBy('name')
+                ->where('province_id',$order->province_id)->get();
+        $wards = DB::table('wards')->orderBy('name')
+                ->where('district_id',$order->district_id)->get();
+        $grandTotal = 0;
+        foreach ($order->detail as $item){
+            $grandTotal += $item->price * $item->quantity;
+        }
+        return view('frontend.order.edit',
+                compact(['order','provinces','districts','wards','grandTotal']));
     }
 
     public function DetailOrder($orderId){
@@ -205,8 +227,8 @@ class OrderController extends Controller
 
     public function UpdateStatusOrder(Request $request){
         $request->validate([
-              'orderId' => 'required',
-              'status' => 'required',
+                'orderId' => 'required',
+                'status' => 'required',
         ]);
 
         $order = Order::findOrFail($request->orderId);
@@ -216,5 +238,67 @@ class OrderController extends Controller
                 'success' => 'Order status has been updated',
                 'status' => $order->status,
         ]);
+    }
+
+    /* MOMO */
+
+    public function redirectMomo(Request $request){
+        $checkPayment = MomoServiceProvider::completePurchase($request);
+        $notification = array(
+                'message'    => $checkPayment['message'],
+                'alert-type' => 'error',
+        );
+        if($checkPayment['success']) {
+            $order = Order::where('invoice_no', $request->orderId)->first();
+            if($order != null){
+                $order->paid = true;
+                $order->status = 1;
+                $order->transaction_id = $request->transId;
+                $order->save();
+                $notification = array(
+                        'message'    => 'Order Successfully',
+                        'alert-type' => 'success',
+                );
+            }else{
+                $notification['message'] = 'Invalid invoice code';
+            }
+        }
+        return redirect()->route('index')->with($notification);
+    }
+
+    public function confirmMomo(Request $request){
+        $order = Order::where('invoice_no', $request->orderId)->first();
+        if($order != null){
+            $order->paid = true;
+            $order->status = 1;
+            $order->transaction_id = $request->transId;
+            $order->save();
+        }
+    }
+
+    /* GET ORDER BY STATUS */
+    public function PendingOrders(){
+        $orders = Order::where('status',1)->orderBy('id','DESC')->get();
+        return view('admin.order.view',compact(['orders']));
+    }
+
+    public function ConfirmedOrders(){
+        $orders = Order::where('status',2)->orderBy('id','DESC')->get();
+        return view('admin.order.view',compact(['orders']));
+    }
+
+    public function ShippedOrders(){
+        $orders = Order::where('status',3)->orderBy('id','DESC')->get();
+        return view('admin.order.view',compact(['orders']));
+    }
+
+    public function DeliveredOrders(){
+        $orders = Order::where('status',4)->orderBy('id','DESC')->get();
+        return view('admin.order.view',compact(['orders']));
+    }
+
+    public function CancelOrders(){
+        $orders = Order::where('status',5)->orderBy('id','DESC')->get();
+        return view('admin.order.view',compact(['orders']));
     }
 }
