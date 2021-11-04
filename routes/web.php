@@ -98,11 +98,11 @@ Route::middleware(['auth:sanctum,web', 'verified'])->get('/dashboard', function 
 
 // Admin Profile Router
 Route::group(['prefix' => 'admin'], function () {
-    Route::get('/login', [AdminController::class, 'loginform'])->name('admin.login');
+    Route::get('/login', [AdminController::class, 'loginForm'])->name('admin.login');
     Route::post('/login', [AdminController::class, 'login'])->name('admin.login.post');
     Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
-    Route::middleware(['auth:sanctum,admin', 'verified'])->group(function () {
+    Route::middleware(['admin'])->group(function () {
         Route::get('/dashboard', function () {
             return view('admin.index');
         })->name('admin.dashboard');
@@ -114,7 +114,7 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 
-Route::middleware(['auth:sanctum,admin', 'verified'])->group(function () {
+Route::middleware(['admin'])->group(function () {
     // Admin Brand Router
     Route::prefix('brand')->group(function () {
         Route::get('/view', [BrandController::class, 'BrandView'])->name('brand.view');

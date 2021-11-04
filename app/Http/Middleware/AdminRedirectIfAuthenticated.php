@@ -20,12 +20,8 @@ class AdminRedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next, ...$guards)
     {
-        $guards = empty($guards) ? [null] : $guards;
-
-        foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                return redirect($guard.'/dashboard');
-            }
+        if (!Auth::guard('admin')->check()) {
+            return redirect()->route('admin.login');
         }
 
         return $next($request);

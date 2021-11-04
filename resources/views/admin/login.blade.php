@@ -74,6 +74,15 @@
                                     <!-- /.col -->
                                     <div class="col-12 text-center">
                                         <button type="submit" class="btn btn-info btn-rounded mt-10">SIGN IN</button>
+                                        @if ($errors->any())
+                                            <div style="color: red;">
+                                                <p style="text-align: center">
+                                                    @foreach ($errors->all() as $error)
+                                                        {{ $error }}
+                                                    @endforeach
+                                                </p>
+                                            </div>
+                                        @endif
                                     </div>
                                     <!-- /.col -->
                                 </div>
@@ -104,11 +113,9 @@
         </div>
     </div>
 
-
     <!-- Vendor JS -->
     <script src=" {{ asset('backend/js/vendors.min.js') }}"></script>
     <script src=" {{ asset('/assets/icons/feather-icons/feather.min.js') }}"></script>
-
 </body>
 
 </html>

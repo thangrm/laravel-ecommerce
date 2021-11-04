@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Pipeline;
 use App\Actions\Fortify\AttemptToAuthenticate;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Actions\EnsureLoginIsNotThrottled;
 use Laravel\Fortify\Actions\PrepareAuthenticatedSession;
 use App\Actions\Fortify\RedirectIfTwoFactorAuthenticatable;
@@ -39,7 +40,12 @@ class AdminController extends Controller
     }
 
     public function loginForm(){
-        return view('admin.login', ['guard' => 'admin']);
+        if($this->guard->check()){
+            return redirect()->route('admin.dashboard');
+        }else{
+            return view('admin.login', ['guard' => 'admin']);
+        }
+
     }
 
     /**
@@ -103,10 +109,6 @@ class AdminController extends Controller
     public function logout(Request $request): LogoutResponse
     {
         $this->guard->logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
 
         return app(LogoutResponse::class);
     }
