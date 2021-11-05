@@ -14,7 +14,7 @@
                                             <ul class="links list-unstyled">
                                                 @foreach($subSubCategories as $subSubCategory)
                                                     @if($subCategory->id == $subSubCategory->subcategory_id)
-                                                        <li><a href="#">{{$subSubCategory->subsubcategory_name}}</a></li>
+                                                        <li><a href="{{ route('product.view.category',[$subSubCategory->id,$subSubCategory->subsubcategory_slug]) }}">{{$subSubCategory->subsubcategory_name}}</a></li>
                                                 @endif
                                             @endforeach
                                             <!-- End SubSubCategory foreach -->
