@@ -3,6 +3,7 @@
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Backend\BrandController;
 use App\Http\Controllers\Backend\CategoryController;
+use App\Http\Controllers\Backend\CouponController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\SliderController;
 use App\Http\Controllers\Backend\SubCategoryController;
@@ -156,6 +157,22 @@ Route::middleware(['admin'])->group(function () {
         });
     });
 
+    // Admin Slide Router
+    Route::prefix('slide')->group(function () {
+        Route::get('/add', [SliderController::class, 'viewSlide'])->name('slide.view');
+        Route::post('/store', [SliderController::class, 'storeSlide'])->name('slide.store');
+        Route::get('/active/{id}', [SliderController::class, 'activeSlide'])->name('slide.active');
+        Route::get('/inactive/{id}', [SliderController::class, 'inactiveSlide'])->name('slide.inactive');
+        Route::get('/delete/{id}', [SliderController::class, 'deleteSlide'])->name('slide.delete');
+    });
+
+    // Coupon Router
+    Route::prefix('coupon')->group(function(){
+       Route::get('/view',[CouponController::class, 'ViewCoupon'])->name('coupon.view');
+       Route::post('/store',[CouponController::class, 'StoreCoupon'])->name('coupon.store');
+        Route::get('/delete/{id}',[CouponController::class, 'DeleteCoupon'])->name('coupon.delete');
+    });
+
     // Admin Product Router
     Route::prefix('product')->group(function () {
         Route::get('/add', [ProductController::class, 'addProduct'])->name('product.add');
@@ -170,15 +187,6 @@ Route::middleware(['admin'])->group(function () {
         Route::post('/classification/update/', [ProductController::class, 'updateClassification'])->name('product.classification.update');
         Route::post('/image/store/', [ProductController::class, 'addImage'])->name('product.image.store');
         Route::get('/image/delete/{id}', [ProductController::class, 'deleteImage'])->name('product.image.delete');
-    });
-
-    // Admin Slide Router
-    Route::prefix('slide')->group(function () {
-        Route::get('/add', [SliderController::class, 'viewSlide'])->name('slide.view');
-        Route::post('/store', [SliderController::class, 'storeSlide'])->name('slide.store');
-        Route::get('/active/{id}', [SliderController::class, 'activeSlide'])->name('slide.active');
-        Route::get('/inactive/{id}', [SliderController::class, 'inactiveSlide'])->name('slide.inactive');
-        Route::get('/delete/{id}', [SliderController::class, 'deleteSlide'])->name('slide.delete');
     });
 
     // Admin Order Router

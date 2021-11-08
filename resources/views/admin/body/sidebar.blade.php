@@ -87,6 +87,23 @@ $nameRouter = Route::current()->getName();
                 </ul>
             </li>
 
+            <li class="treeview {{ ($prefix == '/coupon') ? 'active' : '' }}">
+                <a href="#">
+                    <i data-feather="file"></i>
+                    <span>Coupons</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-right pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="{{ ($nameRouter == 'coupon.view') ? 'active' : '' }}">
+                        <a href="{{ route('coupon.view') }}">
+                            <i class="ti-more"></i>All Coupons
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
             <li class="treeview {{ ($prefix == '/slide') ? 'active' : '' }}">
                 <a href="#">
                     <i data-feather="file"></i>
