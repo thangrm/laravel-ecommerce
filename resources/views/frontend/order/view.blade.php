@@ -57,7 +57,7 @@
                                                 Payment
                                             </a>
                                         @else
-                                            <a href="#" class="btn btn-danger" title="Invoince">
+                                            <a href="{{ route('order.invoice.download',$item->id) }}" class="btn btn-danger" title="Invoince">
                                                 <i class="fa fa-download"></i> Invoice
                                             </a>
                                         @endif

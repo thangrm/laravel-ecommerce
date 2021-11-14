@@ -12,10 +12,11 @@ use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class OrderController extends Controller
 {
-    public function store(Request $request){
+    public function Store(Request $request){
         $CASH = 1;
         $MOMO = 2;
         $request->validate([
@@ -102,7 +103,7 @@ class OrderController extends Controller
         }
     }
 
-    public function update(Request $request){
+    public function Update(Request $request){
         $CASH = 1;
         $MOMO = 2;
         $request->validate([
@@ -168,7 +169,7 @@ class OrderController extends Controller
         }
     }
 
-    public function edit($orderId){
+    public function Edit($orderId){
         $order = Order::findOrFail($orderId);
         $provinces = DB::table('provinces')->orderBy('name')->get();
         $districts = DB::table('districts')->orderBy('name')
@@ -193,6 +194,21 @@ class OrderController extends Controller
             $grandTotal += $item->price * $item->quantity;
         }
         return view('admin.order.detail',compact(['order','province','district','ward','grandTotal']));
+    }
+
+    public function InvoiceDownload($orderId){
+        $order = Order::findOrFail($orderId);
+        $province = DB::table('provinces')->where('id',$order->province_id)->first();
+        $district = DB::table('districts')->where('id',$order->district_id)->first();
+        $ward = DB::table('wards')->where('id',$order->ward_id)->first();
+        $grandTotal = 0;
+
+        foreach ($order->detail as $item){
+            $grandTotal += $item->price * $item->quantity;
+        }
+        //return view('frontend.order.invoice', compact(['order','province','district','ward','grandTotal']));
+        $pdf = PDF::loadView('frontend.order.invoice', compact(['order','province','district','ward','grandTotal']));
+        return $pdf->download('invoice.pdf');
     }
 
     public function MyOrders(){
@@ -242,7 +258,7 @@ class OrderController extends Controller
 
     /* MOMO */
 
-    public function redirectMomo(Request $request){
+    public function RedirectMomo(Request $request){
         $checkPayment = MomoServiceProvider::completePurchase($request);
         $notification = array(
                 'message'    => $checkPayment['message'],
@@ -266,7 +282,7 @@ class OrderController extends Controller
         return redirect()->route('index')->with($notification);
     }
 
-    public function confirmMomo(Request $request){
+    public function ConfirmMomo(Request $request){
         $order = Order::where('invoice_no', $request->orderId)->first();
         if($order != null){
             $order->paid = true;

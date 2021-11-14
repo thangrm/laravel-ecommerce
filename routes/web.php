@@ -62,9 +62,10 @@ Route::group(['prefix' => 'order'], function () {
     Route::middleware(['auth:sanctum,web', 'verified'])->group(function(){
         Route::get('list',[OrderController::class,'MyOrders'])->name('order.list');
         Route::get('/user-detail/{id}',[OrderController::class,'UserOrderDetail'])->name('order.user_detail');
-        Route::get('edit/{id}', [OrderController::class, 'edit'])->name('order.edit');
-        Route::post('store', [OrderController::class, 'store'])->name('order.store');
-        Route::post('update', [OrderController::class, 'update'])->name('order.update');
+        Route::get('edit/{id}', [OrderController::class, 'Edit'])->name('order.edit');
+        Route::post('store', [OrderController::class, 'Store'])->name('order.store');
+        Route::post('update', [OrderController::class, 'Update'])->name('order.update');
+        Route::get('invoice/download/{id}', [OrderController::class, 'InvoiceDownload'])->name('order.invoice.download');
     });
 
     Route::get('momo', [OrderController::class, 'redirectMomo'])->name('order.momo.redirect');
