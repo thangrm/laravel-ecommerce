@@ -168,9 +168,11 @@ Route::middleware(['admin'])->group(function () {
 
     // Coupon Router
     Route::prefix('coupon')->group(function(){
-       Route::get('/view',[CouponController::class, 'ViewCoupon'])->name('coupon.view');
-       Route::post('/store',[CouponController::class, 'StoreCoupon'])->name('coupon.store');
+        Route::get('/view',[CouponController::class, 'ViewCoupon'])->name('coupon.view');
+        Route::post('/store',[CouponController::class, 'StoreCoupon'])->name('coupon.store');
         Route::get('/delete/{id}',[CouponController::class, 'DeleteCoupon'])->name('coupon.delete');
+        Route::get('/edit/{id}',[CouponController::class, 'EditCoupon'])->name('coupon.edit');
+        Route::post('/update',[CouponController::class, 'UpdateCoupon'])->name('coupon.update');
     });
 
     // Admin Product Router

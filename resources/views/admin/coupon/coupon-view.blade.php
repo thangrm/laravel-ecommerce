@@ -55,7 +55,7 @@
                                                             @endif
                                                         </td>
                                                         <td>
-                                                            <a href="" class="btn btn-info" title="Edit Product">
+                                                            <a href="{{ route('coupon.edit',$item->id) }}" class="btn btn-info" title="Edit Product">
                                                                 <i class="fa fa-pencil"></i>
                                                             </a>
                                                             <a href="{{ route('coupon.delete',$item->id) }}"  class="btn btn-danger deleteCoupon" title="Delete Product">
@@ -176,7 +176,7 @@
         }
 
         function padLeadingZeros(num, size) {
-            var s = num+"";
+            let s = num+"";
             while (s.length < size) s = "0" + s;
             return s;
         }
