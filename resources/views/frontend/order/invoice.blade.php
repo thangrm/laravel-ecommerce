@@ -55,7 +55,7 @@
                RM Store
                Email:support@rmstore.com <br>
                Phone: 0999888 <br>
-               Thành phố hà nội <br>
+               Thành phố Hà Nội <br>
             </pre>
         </td>
     </tr>
