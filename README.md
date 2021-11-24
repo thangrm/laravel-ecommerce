@@ -48,7 +48,7 @@
 
 <a name="momo"></a>
 ### 6. Thanh toán với MoMo
-##### Khi chọn thanh toán MoMo người dùng cần thực hiện thêm một bước quét mã thanh toán đơn hàng để hoàn thành bước đặt hàng
+#### Khi chọn thanh toán MoMo người dùng cần thực hiện thêm một bước quét mã thanh toán đơn hàng để hoàn thành bước đặt hàng
 ![image](https://user-images.githubusercontent.com/58413366/143188590-24467d50-b16d-4d2d-bf10-0dba2625e7bd.png)
 
 <a name="view-order"></a>
